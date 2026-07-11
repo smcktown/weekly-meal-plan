@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Meal Plan W8">
+<title>Meal Plan · Week 8</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito:wght@400;600;700&family=Caveat:wght@400;600&display=swap');
+
+:root {
+  --navy: #1D2B4F;
+  --lavender: #C5B4E3;
+  --pink: #F19FC2;
+  --pearl: #FAF8FF;
+  --ink: #1A1A2E;
+  --mist: #EDE8F7;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; padding: 0; background: var(--pearl); }
+body {
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.5;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) calc(env(safe-area-inset-bottom) + 1rem) env(safe-area-inset-left);
+}
+
+header {
+  background: var(--navy);
+  color: var(--pearl);
+  padding: 1.6rem 1.2rem 1.1rem;
+  position: relative;
+}
+header .brand { font-family: 'Caveat', cursive; font-size: 1.4rem; color: var(--lavender); letter-spacing: 0.02em; line-height: 1; }
+header h1 { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 1.9rem; margin: 0.25rem 0 0.15rem; color: var(--pearl); letter-spacing: -0.005em; }
+header .meta { font-size: 0.75rem; color: var(--lavender); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; }
+
+nav.tabs {
+  position: sticky; top: 0; z-index: 10;
+  background: var(--pearl);
+  display: flex; gap: 0.4rem;
+  padding: 0.7rem 0.6rem;
+  border-bottom: 1px solid var(--mist);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+nav.tabs button {
+  flex: 0 0 auto;
+  background: transparent;
+  border: 1.5px solid var(--lavender);
+  color: var(--navy);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+nav.tabs button:hover { background: var(--mist); }
+nav.tabs button.active { background: var(--navy); color: var(--pearl); border-color: var(--navy); }
+
+main { padding: 1rem 1rem 4rem; max-width: 720px; margin: 0 auto; }
+section { display: none; animation: fade 0.2s ease-out; }
+section.active { display: block; }
+@keyframes fade { from {opacity: 0; transform: translateY(4px);} to {opacity: 1; transform: translateY(0);} }
+
+h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: var(--navy);
+  margin: 1rem 0 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--lavender);
+}
+h3 {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--navy);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 1.2rem 0 0.5rem;
+}
+
+.card {
+  background: white;
+  border: 1px solid var(--mist);
+  border-left: 4px solid var(--pink);
+  border-radius: 6px;
+  padding: 0.9rem 1rem;
+  margin-bottom: 0.7rem;
+}
+.card.takeout { border-left-color: var(--lavender); background: var(--mist); }
+.card.oven { border-left-color: var(--navy); }
+.card .when {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: var(--pink);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.2rem;
+}
+.card.takeout .when { color: var(--navy); }
+.card.oven .when { color: var(--navy); }
+.card .name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.2;
+}
+.card .time {
+  display: inline-block;
+  font-size: 0.7rem;
+  color: var(--lavender);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 0.2rem;
+}
+.card .prep {
+  font-size: 0.9rem;
+  color: var(--ink);
+  margin-top: 0.55rem;
+  line-height: 1.5;
+}
+.tag {
+  display: inline-block; font-size: 0.65rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  background: var(--navy); color: var(--pearl);
+  padding: 0.12rem 0.45rem; border-radius: 999px; margin-left: 0.4rem;
+  vertical-align: middle;
+}
+.tag.soccer { background: var(--pink); color: var(--navy); }
+
+.flow {
+  background: var(--mist);
+  border-radius: 8px;
+  padding: 0.7rem 0.95rem;
+  font-size: 0.85rem;
+  color: var(--navy);
+  margin: 0.9rem 0 0.4rem;
+  font-style: italic;
+}
+.flow b { font-style: normal; font-family: 'Caveat', cursive; font-size: 1.05rem; font-weight: 600; }
+
+.trip-banner {
+  background: linear-gradient(90deg, var(--pink), var(--lavender));
+  color: var(--navy);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.trip-banner b { font-family: 'Caveat', cursive; font-size: 1.1rem; }
+
+.note {
+  font-size: 0.82rem; color: var(--navy); margin-top: 0.8rem;
+  padding: 0.6rem 0.8rem; background: var(--mist); border-radius: 6px;
+}
+
+table.simple { width: 100%; border-collapse: collapse; margin: 0.4rem 0 0.8rem; font-size: 0.92rem; }
+table.simple th, table.simple td { text-align: left; padding: 0.55rem 0.5rem; border-bottom: 1px solid var(--mist); vertical-align: top; }
+table.simple th { font-family: 'Nunito', sans-serif; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--navy); }
+table.simple td:first-child { font-weight: 700; color: var(--navy); white-space: nowrap; padding-right: 1rem; }
+table.simple td.ok { color: var(--navy); font-weight: 700; white-space: nowrap; }
+
+/* Shopping + prep list */
+.shop-section {
+  background: white;
+  border: 1px solid var(--mist);
+  border-radius: 8px;
+  margin: 0.6rem 0;
+  overflow: hidden;
+}
+.shop-section h3 {
+  margin: 0;
+  padding: 0.7rem 1rem;
+  background: var(--mist);
+  color: var(--navy);
+  border-bottom: 1px solid var(--lavender);
+}
+.shop-section ul { list-style: none; margin: 0; padding: 0; }
+.shop-section li {
+  display: flex; align-items: flex-start; gap: 0.7rem;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--mist);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.shop-section li:last-child { border-bottom: none; }
+.shop-section li:active { background: var(--mist); }
+.shop-section .box {
+  flex: 0 0 22px; width: 22px; height: 22px;
+  border: 2px solid var(--navy);
+  border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.shop-section .box::after {
+  content: "✓";
+  color: var(--pearl);
+  font-weight: 700;
+  font-size: 0.9rem;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.shop-section li.done .box { background: var(--navy); }
+.shop-section li.done .box::after { opacity: 1; }
+.shop-section .label { flex: 1; font-size: 0.95rem; color: var(--ink); transition: all 0.15s; }
+.shop-section .label small { display: block; color: var(--lavender); font-size: 0.75rem; margin-top: 0.15rem; }
+.shop-section li.done .label { color: var(--lavender); text-decoration: line-through; }
+
+.progress-bar {
+  position: sticky; top: 56px; z-index: 9;
+  background: var(--pearl);
+  padding: 0.5rem 1rem 0.6rem;
+  border-bottom: 1px solid var(--mist);
+  display: flex; align-items: center; gap: 0.7rem;
+}
+.progress-bar .track {
+  flex: 1; height: 6px; background: var(--mist); border-radius: 3px; overflow: hidden;
+}
+.progress-bar .fill {
+  height: 100%; background: linear-gradient(90deg, var(--pink), var(--navy));
+  transition: width 0.3s;
+  width: 0%;
+}
+.progress-bar .pct {
+  font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.78rem;
+  color: var(--navy); min-width: 38px; text-align: right;
+}
+.progress-bar .reset {
+  background: transparent; border: 1px solid var(--lavender);
+  color: var(--navy); padding: 0.25rem 0.55rem; font-size: 0.72rem;
+  border-radius: 4px; cursor: pointer; font-weight: 600;
+}
+
+.footer-note {
+  text-align: center;
+  font-family: 'Caveat', cursive;
+  font-size: 1.05rem;
+  color: var(--lavender);
+  margin-top: 1.8rem;
+  padding: 0.8rem 0;
+}
+
+@media print {
+  nav.tabs, .progress-bar, .reset { display: none; }
+  section { display: block !important; page-break-after: always; }
+  body { background: white; padding: 1cm; }
+  header { background: white; color: var(--navy); border-bottom: 2px solid var(--navy); }
+  header h1, header .meta, header .brand { color: var(--navy); }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">the weekly kitchen</div>
+  <h1>Meal Plan · Week 8</h1>
+  <div class="meta">Cook Tue + Thu · family lunches</div>
+</header>
+
+<nav class="tabs">
+  <button data-tab="meals" class="active">🍽 Cooking</button>
+  <button data-tab="recess" >🎒 Recess</button>
+  <button data-tab="snacks">🍎 Snacks</button>
+  <button data-tab="shop">🛒 Shopping</button>
+</nav>
+
+<main>
+
+<section id="meals" class="active">
+  <div class="trip-banner">
+    <b>🍜 This week.</b> Cook <b>Tue</b> (lunch + dinner), <b>Thu</b> (lunch + dinner), <b>Fri lunch</b>. <b>Lunches are family meals</b> — kids home midday. <b>Tue + Thu are split-dinner nights</b> → dishes hold warm: one sitting ~6pm, the rest ~7pm. <b>No fish on those nights.</b> Proteins: chicken · pork · tuna (+ tofu as an adult add-on — kids don't eat it).
+  </div>
+
+  <div class="flow"><b>Cross-meal flow:</b> Thu oven pork — cook double → Fri leftover pork rice bowls</div>
+
+  <div class="card">
+    <div class="when">Tue · lunch <span class="tag">family</span></div>
+    <div class="name">Tuna-mayo rice bowls / onigiri + soft egg + cucumber</div>
+    <div class="time">⏱ 10 min · no cook</div>
+    <div class="prep">Kewpie + canned tuna over rice (kids love it), soft-boiled egg, cucumber, nori. <b>Me:</b> extra tuna + egg for protein. <b>Little one:</b> soft tuna-rice, no big nori.</div>
+  </div>
+
+  <div class="card">
+    <div class="when">Tue · dinner <span class="tag">defrost</span> <span class="tag soccer">holds warm</span></div>
+    <div class="name">Frozen doenjang soup (chicken) + rice + baby bok choy</div>
+    <div class="time">⏱ 10 min · reheat</div>
+    <div class="prep">Freezer stash → defrost + reheat; rice cooker; blanch bok choy → <b>soup holds warm for the ~6pm / ~7pm split</b>. <b>Me:</b> eat the chicken + rice + veg, <b>go easy on the broth</b> (doenjang can bloat — FODMAP); add firm tofu for +protein. <b>Little one:</b> soft chicken + rice + soft greens. <b>Low-carb one:</b> extra chicken, skip rice.</div>
+  </div>
+
+  <div class="card">
+    <div class="when">Thu · lunch <span class="tag">family</span></div>
+    <div class="name">Macaroni soup with egg, ham &amp; fishball</div>
+    <div class="time">⏱ 15 min</div>
+    <div class="prep">Kids' favourite. Simmer light chicken / ikan-bilis stock, add macaroni, ham, fishballs, beaten egg, blanched greens. <b>Me:</b> swap macaroni → rice vermicelli (gut-safe) + extra egg/fishball; whey shake to top up. <b>Little one:</b> soft macaroni + chopped ham + egg.</div>
+  </div>
+
+  <div class="card oven">
+    <div class="when">Thu · dinner <span class="tag">oven · no-fry</span> <span class="tag soccer">holds warm</span></div>
+    <div class="name">Miso-maple oven pork tenderloin (no-sear) + rice + blanched greens</div>
+    <div class="time">⏱ 10 min hands-on</div>
+    <div class="prep"><b>Oven, clean by design.</b> Whisk miso + maple + soy + mirin; marinate tenderloin in the AM → lined tray → oven ~20–25 min, rest &amp; slice. Rice cooker; blanch greens one pot. <b>Cook double → Fri lunch.</b> <b>Little one:</b> soft sliced pork + rice + greens. <b>Low-carb one:</b> extra pork, skip rice.</div>
+  </div>
+
+  <div class="card">
+    <div class="when">Fri · lunch <span class="tag">family</span></div>
+    <div class="name">Leftover pork rice bowls + soft egg + wilted spinach</div>
+    <div class="time">⏱ 10 min</div>
+    <div class="prep">Slice Thu's extra pork over rice (kids love it), soft egg, quick-wilt spinach with garlic-infused oil. <b>Me:</b> bigger pork + egg portion. <b>Little one:</b> soft chopped pork + rice.</div>
+  </div>
+
+  <h2>Low-carb swaps</h2>
+  <table class="simple">
+    <tbody>
+      <tr><td>Tue</td><td>Extra chicken + tofu over extra greens → skip rice</td></tr>
+      <tr><td>Thu</td><td>Extra pork + double greens → skip rice</td></tr>
+    </tbody>
+  </table>
+
+  <h2>My protein — aim ≥85 g</h2>
+  <table class="simple">
+    <thead><tr><th>Day</th><th>Lunch → topper → dinner</th><th>Total</th></tr></thead>
+    <tbody>
+      <tr><td>Tue</td><td>2 eggs + yogurt · tuna don · doenjang chicken soup + tofu</td><td class="ok">~94 g ✓</td></tr>
+      <tr><td>Thu</td><td>2 eggs + cheese · macaroni soup + whey · oven pork</td><td class="ok">~99 g ✓</td></tr>
+      <tr><td>Fri</td><td>palm-protein bf · pork bowl · own dinner</td><td class="ok">~85 g+ ✓</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">🗓 <b>Wed = no-cook / eat out.</b> Eat protein-first when out. <b>Fri:</b> pack a swim kit.</div>
+
+  <h2>Light prep</h2>
+  <div class="flow"><b>A few minutes sets it up:</b> boil a dozen eggs (soft eggs Tue / Thu / Fri) · <b>Mon night</b> pack Tue recess + snacks, thaw prata, freeze the cool bag · <b>Tue AM</b> pack the kids' prata warm for recess · <b>Thu AM</b> whisk the miso-maple glaze, marinate pork, line the tray, set the rice-cooker — hands-free through the afternoon; cook double pork → Fri.</div>
+</section>
+
+<section id="recess">
+  <p style="font-size: 0.85rem; color: var(--lavender); margin-bottom: 0.5rem;">
+    <b>Why packed recess:</b> exam week → recess is eaten in class, so pack own food (younger kid, Tue–Thu). Older kid has a recess meeting Tue → pack that morning. Heat &amp; wrap to keep warm.
+  </p>
+  <table class="simple">
+    <thead><tr><th>Day</th><th>Who · Recess · Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Tue</td><td><b>Both kids — Roti prata.</b> Pack warm. Plain or lightly sugared.</td></tr>
+      <tr><td>Wed</td><td><b>Younger kid — Ham &amp; cheese sandwich.</b> Wholemeal, cheddar (low-lactose).</td></tr>
+      <tr><td>Thu</td><td><b>Younger kid — Croissant</b> (ham &amp; cheese to add protein).</td></tr>
+    </tbody>
+  </table>
+  <div class="note">🔁 Swap Wed ↔ Thu freely.</div>
+</section>
+
+<section id="snacks">
+  <p style="font-size: 0.85rem; color: var(--lavender); margin-bottom: 0.5rem;">
+    Every day Mon–Fri · both kids · <b>main · side · fruit</b> · shelf-stable, packed the night before. Snack main avoids that day's recess carb.
+  </p>
+  <table class="simple">
+    <thead><tr><th>Day</th><th>Main · Side · Fruit</th></tr></thead>
+    <tbody>
+      <tr><td>Mon</td><td>Cheddar cubes · wholemeal crackers · grapes</td></tr>
+      <tr><td>Tue</td><td>Mini muffin · Japanese rice crackers · mandarin <small style="color:var(--lavender)">(recess is prata → non-bread)</small></td></tr>
+      <tr><td>Wed</td><td>Yogurt pouch · pretzels · strawberries <small style="color:var(--lavender)">(recess is sandwich → non-bread)</small></td></tr>
+      <tr><td>Thu</td><td>Cheese twists · veg sticks · apple <small style="color:var(--lavender)">(recess is croissant → savoury)</small></td></tr>
+      <tr><td>Fri</td><td>Ham &amp; cheese pinwheel · popcorn · grapes</td></tr>
+    </tbody>
+  </table>
+  <div class="note">🧀 Dairy spread across the week — yogurt Wed, cheese Mon/Thu.</div>
+</section>
+
+<section id="shop">
+  <div class="progress-bar">
+    <span class="pct" id="pct">0%</span>
+    <div class="track"><div class="fill" id="fill"></div></div>
+    <button class="reset" onclick="resetShop()">Reset</button>
+  </div>
+
+  <div class="shop-section">
+    <h3>🥩 Proteins</h3>
+    <ul>
+      <li data-id="p-tuna"><div class="box"></div><div class="label">Canned tuna — ×4<small>Tue lunch (family)</small></div></li>
+      <li data-id="p-pork"><div class="box"></div><div class="label">Pork tenderloin — ~700 g<small>Thu dinner · buy double → Fri lunch</small></div></li>
+      <li data-id="p-hamfish"><div class="box"></div><div class="label">Ham (extra beyond snack ham) + fishballs<small>Thu macaroni soup</small></div></li>
+      <li data-id="p-tofu"><div class="box"></div><div class="label">Firm tofu — 1 small block<small>adult Tue add-on only (firm, not silken)</small></div></li>
+      <li data-id="p-eggs"><div class="box"></div><div class="label">Eggs — check tray<small>soft eggs across all bowls + soup</small></div></li>
+      <li data-id="p-whey"><div class="box"></div><div class="label">Whey isolate / Greek yogurt<small>my protein topper — restock</small></div></li>
+    </ul>
+  </div>
+
+  <div class="shop-section">
+    <h3>🍎 Produce &amp; fruit</h3>
+    <ul>
+      <li data-id="v-bokchoy"><div class="box"></div><div class="label">Baby bok choy<small>Tue dinner</small></div></li>
+      <li data-id="v-spinach"><div class="box"></div><div class="label">Spinach — 1 bag<small>Fri lunch</small></div></li>
+      <li data-id="v-cuke"><div class="box"></div><div class="label">Cucumber — 2<small>Tue lunch</small></div></li>
+      <li data-id="v-carrot"><div class="box"></div><div class="label">Carrots<small>veg sticks · soup</small></div></li>
+      <li data-id="v-aromatics"><div class="box"></div><div class="label">Ginger · spring onions<small>soup + wilt</small></div></li>
+      <li data-id="f-recessfruit"><div class="box"></div><div class="label">Grapes ×2 · mandarins · strawberries · apple<small>snack-box fruit</small></div></li>
+    </ul>
+  </div>
+
+  <div class="shop-section">
+    <h3>🥐 Kids — recess &amp; chilled</h3>
+    <ul>
+      <li data-id="k-prata"><div class="box"></div><div class="label">Frozen roti prata — 1 pack<small>Tue recess (both kids)</small></div></li>
+      <li data-id="k-hamcheese"><div class="box"></div><div class="label">Ham slices · cheddar (slices + cubes)<small>Wed sandwich · snacks</small></div></li>
+      <li data-id="k-croissant"><div class="box"></div><div class="label">Croissants — 1 pack<small>Thu recess (younger kid)</small></div></li>
+      <li data-id="k-bread"><div class="box"></div><div class="label">Wholemeal sandwich bread<small>Wed recess sandwich</small></div></li>
+      <li data-id="k-yogurt"><div class="box"></div><div class="label">Yogurt pouches<small>Wed snack</small></div></li>
+    </ul>
+  </div>
+
+  <div class="shop-section">
+    <h3>🍚 Pantry / cooking (Asian)</h3>
+    <ul>
+      <li data-id="b-rice"><div class="box"></div><div class="label">Rice — check level<small>staple · all bowls</small></div></li>
+      <li data-id="b-macaroni"><div class="box"></div><div class="label">Macaroni<small>Thu soup</small></div></li>
+      <li data-id="b-vermicelli"><div class="box"></div><div class="label">Rice vermicelli<small>gut-safe swap in the soup</small></div></li>
+      <li data-id="b-nori"><div class="box"></div><div class="label">Nori<small>Tue onigiri</small></div></li>
+      <li data-id="b-kewpie"><div class="box"></div><div class="label">Kewpie mayo — check<small>Tue tuna bowls</small></div></li>
+      <li data-id="b-sauces"><div class="box"></div><div class="label">Miso paste · maple syrup · mirin · light soy — check<small>Thu glaze</small></div></li>
+      <li data-id="b-oil"><div class="box"></div><div class="label">Garlic-infused oil — check<small>wilt spinach</small></div></li>
+      <li data-id="b-sesame"><div class="box"></div><div class="label">Sesame — check</div></li>
+    </ul>
+  </div>
+
+  <div class="shop-section">
+    <h3>🎒 Snack-box restock (both kids)</h3>
+    <ul>
+      <li data-id="s-muffin"><div class="box"></div><div class="label">Mini muffins<small>Tue main</small></div></li>
+      <li data-id="s-twists"><div class="box"></div><div class="label">Cheese twists<small>Thu main</small></div></li>
+      <li data-id="s-pinwheel"><div class="box"></div><div class="label">Ham &amp; cheese pinwheel makings<small>Fri main (ham/cheddar above)</small></div></li>
+      <li data-id="s-sides"><div class="box"></div><div class="label">Japanese rice crackers · pretzels · veg sticks/chips · popcorn mini-bags<small>snack sides — check pantry</small></div></li>
+    </ul>
+  </div>
+</section>
+
+<div class="footer-note">a full table, a clean kitchen · make it a beautiful week ✶</div>
+
+</main>
+
+<script>
+const STORE_KEY = 'weekly-w8-shop-v1';
+
+// Tabs
+document.querySelectorAll('nav.tabs button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tab = btn.dataset.tab;
+    document.querySelectorAll('nav.tabs button').forEach(b => b.classList.toggle('active', b === btn));
+    document.querySelectorAll('section').forEach(s => s.classList.toggle('active', s.id === tab));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+// Shopping checklist
+function getState() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch { return {}; }
+}
+function setState(s) {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(s)); } catch {}
+}
+function updateProgress() {
+  const items = document.querySelectorAll('.shop-section li');
+  const done = document.querySelectorAll('.shop-section li.done').length;
+  const pct = items.length ? Math.round((done / items.length) * 100) : 0;
+  document.getElementById('pct').textContent = pct + '%';
+  document.getElementById('fill').style.width = pct + '%';
+}
+function applyState() {
+  const s = getState();
+  document.querySelectorAll('.shop-section li').forEach(li => {
+    if (s[li.dataset.id]) li.classList.add('done');
+  });
+  updateProgress();
+}
+document.querySelectorAll('.shop-section li').forEach(li => {
+  li.addEventListener('click', () => {
+    li.classList.toggle('done');
+    const s = getState();
+    s[li.dataset.id] = li.classList.contains('done');
+    setState(s);
+    updateProgress();
+  });
+});
+function resetShop() {
+  if (!confirm('Reset all checkboxes?')) return;
+  localStorage.removeItem(STORE_KEY);
+  document.querySelectorAll('.shop-section li').forEach(li => li.classList.remove('done'));
+  updateProgress();
+}
+applyState();
+</script>
+
+</body>
+</html>
