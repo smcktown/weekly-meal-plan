@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Meal Plan W10">
+<title>Meal Plan · Week 10</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito:wght@400;600;700&family=Caveat:wght@400;600&display=swap');
+
+:root {
+  --navy: #1D2B4F;
+  --lavender: #C5B4E3;
+  --pink: #F19FC2;
+  --pearl: #FAF8FF;
+  --ink: #1A1A2E;
+  --mist: #EDE8F7;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; padding: 0; background: var(--pearl); }
+body {
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.5;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) calc(env(safe-area-inset-bottom) + 1rem) env(safe-area-inset-left);
+}
+
+header {
+  background: var(--navy);
+  color: var(--pearl);
+  padding: 1.6rem 1.2rem 1.1rem;
+  position: relative;
+}
+header .brand { font-family: 'Caveat', cursive; font-size: 1.4rem; color: var(--lavender); letter-spacing: 0.02em; line-height: 1; }
+header h1 { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 1.9rem; margin: 0.25rem 0 0.15rem; color: var(--pearl); letter-spacing: -0.005em; }
+header .meta { font-size: 0.75rem; color: var(--lavender); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; }
+
+nav.tabs {
+  position: sticky; top: 0; z-index: 10;
+  background: var(--pearl);
+  display: flex; gap: 0.4rem;
+  padding: 0.7rem 0.6rem;
+  border-bottom: 1px solid var(--mist);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+nav.tabs button {
+  flex: 0 0 auto;
+  background: transparent;
+  border: 1.5px solid var(--lavender);
+  color: var(--navy);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+nav.tabs button:hover { background: var(--mist); }
+nav.tabs button.active { background: var(--navy); color: var(--pearl); border-color: var(--navy); }
+
+main { padding: 1rem 1rem 4rem; max-width: 720px; margin: 0 auto; }
+section { display: none; animation: fade 0.2s ease-out; }
+section.active { display: block; }
+@keyframes fade { from {opacity: 0; transform: translateY(4px);} to {opacity: 1; transform: translateY(0);} }
+
+h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: var(--navy);
+  margin: 1rem 0 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--lavender);
+}
+h3 {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--navy);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 1.2rem 0 0.5rem;
+}
+
+.card {
+  background: white;
+  border: 1px solid var(--mist);
+  border-left: 4px solid var(--pink);
+  border-radius: 6px;
+  padding: 0.9rem 1rem;
+  margin-bottom: 0.7rem;
+}
+.card.takeout { border-left-color: var(--lavender); background: var(--mist); }
+.card.oven { border-left-color: var(--navy); }
+.card .when {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: var(--pink);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.2rem;
+}
+.card.takeout .when { color: var(--navy); }
+.card.oven .when { color: var(--navy); }
+.card .name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.2;
+}
+.card .time {
+  display: inline-block;
+  font-size: 0.7rem;
+  color: var(--lavender);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 0.2rem;
+}
+.card .prep {
+  font-size: 0.9rem;
+  color: var(--ink);
+  margin-top: 0.55rem;
+  line-height: 1.5;
+}
+.tag {
+  display: inline-block; font-size: 0.65rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  background: var(--navy); color: var(--pearl);
+  padding: 0.12rem 0.45rem; border-radius: 999px; margin-left: 0.4rem;
+  vertical-align: middle;
+}
+.tag.hold { background: var(--pink); color: var(--navy); }
+.tag.carb { background: var(--lavender); color: var(--navy); }
+
+.flow {
+  background: var(--mist);
+  border-radius: 8px;
+  padding: 0.7rem 0.95rem;
+  font-size: 0.85rem;
+  color: var(--navy);
+  margin: 0.9rem 0 0.4rem;
+  font-style: italic;
+}
+.flow b { font-style: normal; font-family: 'Caveat', cursive; font-size: 1.05rem; font-weight: 600; }
+
+.trip-banner {
+  background: linear-gradient(90deg, var(--pink), var(--lavender));
+  color: var(--navy);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.trip-banner b { font-family: 'Caveat', cursive; font-size: 1.1rem; }
+
+.note {
+  font-size: 0.82rem; color: var(--navy); margin-top: 0.8rem;
+  padding: 0.6rem 0.8rem; background: var(--mist); border-radius: 6px;
+}
+
+table.simple { width: 100%; border-collapse: collapse; margin: 0.4rem 0 0.8rem; font-size: 0.92rem; }
+table.simple th, table.simple td { text-align: left; padding: 0.55rem 0.5rem; border-bottom: 1px solid var(--mist); vertical-align: top; }
+table.simple th { font-family: 'Nunito', sans-serif; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--navy); }
+table.simple td:first-child { font-weight: 700; color: var(--navy); white-space: nowrap; padding-right: 1rem; }
+table.simple td.ok { color: var(--navy); font-weight: 700; white-space: nowrap; }
+
+/* Shopping + prep list */
+.shop-section {
+  background: white;
+  border: 1px solid var(--mist);
+  border-radius: 8px;
+  margin: 0.6rem 0;
+  overflow: hidden;
+}
+.shop-section h3 {
+  margin: 0;
+  padding: 0.7rem 1rem;
+  background: var(--mist);
+  color: var(--navy);
+  border-bottom: 1px solid var(--lavender);
+}
+.shop-section ul { list-style: none; margin: 0; padding: 0; }
+.shop-section li {
+  display: flex; align-items: flex-start; gap: 0.7rem;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--mist);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.shop-section li:last-child { border-bottom: none; }
+.shop-section li:active { background: var(--mist); }
+.shop-section .box {
+  flex: 0 0 22px; width: 22px; height: 22px;
+  border: 2px solid var(--navy);
+  border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.shop-section .box::after {
+  content: "✓";
+  color: var(--pearl);
+  font-weight: 700;
+  font-size: 0.9rem;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.shop-section li.done .box { background: var(--navy); }
+.shop-section li.done .box::after { opacity: 1; }
+.shop-section .label { flex: 1; font-size: 0.95rem; color: var(--ink); transition: all 0.15s; }
+.shop-section .label small { display: block; color: var(--lavender); font-size: 0.75rem; margin-top: 0.15rem; }
+.shop-section li.done .label { color: var(--lavender); text-decoration: line-through; }
+
+.progress-bar {
+  position: sticky; top: 56px; z-index: 9;
+  background: var(--pearl);
+  padding: 0.5rem 1rem 0.6rem;
+  border-bottom: 1px solid var(--mist);
+  display: flex; align-items: center; gap: 0.7rem;
+}
+.progress-bar .track {
+  flex: 1; height: 6px; background: var(--mist); border-radius: 3px; overflow: hidden;
+}
+.progress-bar .fill {
+  height: 100%; background: linear-gradient(90deg, var(--pink), var(--navy));
+  transition: width 0.3s;
+  width: 0%;
+}
+.progress-bar .pct {
+  font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.78rem;
+  color: var(--navy); min-width: 38px; text-align: right;
+}
+.progress-bar .reset {
+  background: transparent; border: 1px solid var(--lavender);
+  color: var(--navy); padding: 0.25rem 0.55rem; font-size: 0.72rem;
+  border-radius: 4px; cursor: pointer; font-weight: 600;
+}
+
+.footer-note {
+  text-align: center;
+  font-family: 'Caveat', cursive;
+  font-size: 1.05rem;
+  color: var(--lavender);
+  margin-top: 1.8rem;
+  padding: 0.8rem 0;
+}
+
+@media print {
+  nav.tabs, .progress-bar, .reset { display: none; }
+  section { display: block !important; page-break-after: always; }
+  body { background: white; padding: 1cm; }
+  header { background: white; color: var(--navy); border-bottom: 2px solid var(--navy); }
+  header h1, header .meta, header .brand { color: var(--navy); }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">the weekly kitchen</div>
+  <h1>Meal Plan · Week 10</h1>
+  <div class="meta">Cook Tue + Thu + Fri · freezer-first · a different carb each night</div>
+</header>
+
+<nav class="tabs">
+  <button data-tab="meals" class="active">🍽 Cooking</button>
+  <button data-tab="breakfast">🥚 Breakfasts</button>
+  <button data-tab="snacks">🍎 Snacks</button>
+  <button data-tab="shop">🛒 Shopping</button>
+</nav>
+
+<main>
+
+<section id="meals" class="active">
+  <div class="trip-banner">
+    <b>🍳 Four cooks — freezer-first, and no rice every night.</b> Cook <b>Tue dinner</b>, <b>Thu</b> (lunch + dinner), <b>Fri dinner</b>. <b>Mon + Wed are eat-out.</b> Every main comes from the freezer (chicken thighs, minced pork, minced beef, salmon) → <b>nothing to buy in the protein aisle.</b> Carbs rotate: <b>sweet potato fries → bee hoon → pasta → rice.</b> <b>Tue + Thu are split-dinner nights</b> — dishes hold warm (one sitting ~6pm, the rest ~7pm), and <b>no fish those nights</b>. <b>Fri is the fish-safe night.</b>
+  </div>
+
+  <div class="flow"><b>Heads up:</b> all the protein's in the freezer already — just buy the fresh medley veg, sweet potatoes, spinach, and the noodles/pasta.</div>
+
+  <div class="card oven">
+    <div class="when">Tue · dinner <span class="tag hold">holds warm</span> <span class="tag carb">🍠 sweet potato fries</span></div>
+    <div class="name">One-tray chicken + vegetable medley + sweet potato fries</div>
+    <div class="time">⏱ 10 min hands-on · oven</div>
+    <div class="prep"><b>Marinate in the AM.</b> Chicken thighs (from the freezer) on a bed of capsicum, zucchini, cherry tomato &amp; red onion; lined tray; oven 200&nbsp;°C ~30–35 min. <b>Sweet potato fries on their own lined tray</b> — cut into batons, toss in oil + a light dusting of cornflour, 220&nbsp;°C, flip halfway (own tray = they crisp instead of steaming). <b>Two chicken trays for the split:</b> tray 1 in ~5:35, tray 2 from the fridge ~6:35. <b>Broil 2–3 min</b> for char; re-crisp the fries under the broiler for the 7pm sitting. <b>Little one:</b> soft fries + chopped chicken. <b>Low-carb one:</b> extra chicken + double veg, skip the fries.</div>
+  </div>
+
+  <div class="card">
+    <div class="when">Thu · lunch <span class="tag">family</span> <span class="tag carb">🍜 bee hoon</span></div>
+    <div class="name">Minced pork &amp; beef bee hoon + egg + spinach</div>
+    <div class="time">⏱ 15 min</div>
+    <div class="prep">Rice vermicelli tossed with minced pork + a handful of minced beef (both from the freezer), egg, wilted spinach, spring-onion tops, a splash of soy &amp; sesame. The beef keeps it hearty. Quick and everyone eats it. <b>Me:</b> bigger meat portion, garlic-infused oil only, add capsicum/tomato. <b>Little one:</b> soft noodles, mince cut fine.</div>
+  </div>
+
+  <div class="card">
+    <div class="when">Thu · dinner <span class="tag hold">holds warm</span> <span class="tag carb">🍝 pasta</span></div>
+    <div class="name">Spaghetti bolognese (minced beef)</div>
+    <div class="time">⏱ 15 min hands-on</div>
+    <div class="prep">Minced beef from the freezer → a proper slow-ish bolognese (soffritto, canned tomato, simmer). <b>The sauce holds &amp; reheats beautifully</b> for the 6pm/7pm split — boil the pasta in two goes, or hold it cooked. <b>Cook double → freeze half.</b> <b>Me:</b> garlic-infused oil, and my sauce over rice vermicelli / a little GF pasta instead of wheat. <b>Little one:</b> soft mince, cut the pasta small.</div>
+  </div>
+
+  <div class="card oven">
+    <div class="when">Fri · dinner <span class="tag hold">fish-safe night</span> <span class="tag carb">🍚 rice</span></div>
+    <div class="name">Teriyaki / miso salmon + rice + bok choy</div>
+    <div class="time">⏱ 15 min · oven</div>
+    <div class="prep">Uses the salmon in the fridge. Marinate Thu night → oven 200&nbsp;°C ~12 min; <b>glaze burns fast, watch the last 3 min.</b> The one no-split, no-rush night — and the one rice night, a nice change after the fries/noodles/pasta. <b>Little one:</b> flake, check for bones. <b>Low-carb one:</b> two fillets, skip rice. <b>Freeze any extra salmon</b> — travel week is coming.</div>
+  </div>
+
+  <h2>Low-carb swaps</h2>
+  <table class="simple">
+    <tbody>
+      <tr><td>Tue</td><td>Extra chicken + double the veg medley → skip the fries</td></tr>
+      <tr><td>Thu L</td><td>More minced meat + egg, go light on the noodles</td></tr>
+      <tr><td>Thu D</td><td>Bolognese over zucchini ribbons / extra veg → skip pasta</td></tr>
+      <tr><td>Fri</td><td>Two salmon fillets → skip rice</td></tr>
+    </tbody>
+  </table>
+
+  <h2>My protein — aim ≥85 g</h2>
+  <table class="simple">
+    <thead><tr><th>Day</th><th>Breakfast · lunch · dinner</th><th>Total</th></tr></thead>
+    <tbody>
+      <tr><td>Tue</td><td>2 eggs + yogurt · (eat-out, protein-first) · chicken tray + whey topper</td><td class="ok">~85 g ✓</td></tr>
+      <tr><td>Thu</td><td>tamagoyaki + cheese · pork-beef bee hoon · beef bolognese</td><td class="ok">~95 g ✓</td></tr>
+      <tr><td>Fri</td><td>protein pancakes · (light) · salmon + whey topper</td><td class="ok">~85 g ✓</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">🗓 <b>Mon + Wed = eat out.</b> Eat protein-first when out. No Tue lunch cook → lean on breakfast eggs + a protein snack + a whey topper to hold the target.</div>
+
+  <h2>Light prep</h2>
+  <div class="flow"><b>A few minutes sets it up:</b> <b>Sun night</b> bake egg muffins &amp; boil a dozen eggs · <b>Tue AM</b> marinate the tray chicken → split into two boxes, one per tray; cut the sweet potato fries · <b>Thu AM</b> thaw the minced pork &amp; beef · <b>Thu night</b> marinate the salmon &amp; mix the pancake batter. <b>Bolognese cooks double → half to the freezer.</b></div>
+</section>
+
+<section id="breakfast">
+  <div class="trip-banner">
+    <b>🥚 No scrambled eggs.</b> Every weekday morning is <b>make-ahead</b> — bake-and-reheat (muffins, frittata) or eat-cold (boiled, tamagoyaki). Mornings are <b>0–40 seconds</b>. Pour the kids' portion <b>before</b> adding protein powder / PB.
+  </div>
+  <table class="simple">
+    <thead><tr><th>Day</th><th>Breakfast</th><th>AM</th><th>Low-carb top-up</th></tr></thead>
+    <tbody>
+      <tr><td>Mon</td><td><b>Egg muffins</b> (ham + veg) + fruit <small style="color:var(--lavender)">baked Sun night</small></td><td>~40 s</td><td>+2 eggs</td></tr>
+      <tr><td>Tue</td><td><b>Overnight oats</b> + Greek yogurt + banana <small style="color:var(--lavender)">made Mon night · me: bigger pot + boiled egg</small></td><td>0 — cold</td><td>+boiled egg</td></tr>
+      <tr><td>Wed</td><td><b>Cold tamagoyaki</b> + toast + fruit <small style="color:var(--lavender)">rolled Tue night</small></td><td>0 — cold</td><td>+2 eggs</td></tr>
+      <tr><td>Thu</td><td><b>Egg muffins</b> (reheat) + fruit <small style="color:var(--lavender)">from Sun batch</small></td><td>~40 s</td><td>+cottage cheese</td></tr>
+      <tr><td>Fri</td><td><b>Protein pancakes</b> (oats, egg, banana) + PB + berries <small style="color:var(--lavender)">batter mixed Thu night</small></td><td>batter ready</td><td>eat 1–2 extra</td></tr>
+      <tr><td>Sat</td><td><b>Overnight oats</b> + Greek yogurt, banana <small style="color:var(--lavender)">grab &amp; go before the early activity</small></td><td>0</td><td>bigger pot + boiled egg</td></tr>
+      <tr><td>Sun</td><td><b>Smoothie + egg muffin</b> <small style="color:var(--lavender)">before the morning out</small></td><td>~2 min</td><td>full scoop</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Make-ahead schedule</h2>
+  <table class="simple">
+    <thead><tr><th>Cook when</th><th>What → covers</th></tr></thead>
+    <tbody>
+      <tr><td>Sun night</td><td><b>Bake egg muffins</b> (ham + veg) · <b>boil a dozen eggs</b> → <b>Mon</b> + <b>Thu</b> breakfast + soft eggs for the bowls</td></tr>
+      <tr><td>Mon night</td><td><b>Batch the overnight oats</b> → <b>Tue</b> breakfast</td></tr>
+      <tr><td>Tue AM</td><td>Marinate the tray chicken; cut the sweet potato fries → <b>Tue</b> dinner</td></tr>
+      <tr><td>Tue night</td><td><b>Roll the tamagoyaki</b> → <b>Wed</b> — eat cold</td></tr>
+      <tr><td>Thu AM</td><td>Thaw the minced pork + beef → <b>Thu</b> lunch &amp; dinner</td></tr>
+      <tr><td>Thu night</td><td>Mix the pancake batter · marinate the salmon → <b>Fri</b></td></tr>
+      <tr><td>Fri night</td><td>Batch the overnight oats → <b>Sat</b></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="snacks">
+  <p style="font-size: 0.85rem; color: var(--lavender); margin-bottom: 0.5rem;">
+    Every school day · <b>main · side · fruit</b> · shelf-stable, packed the night before. Snack main avoids that day's recess carb.
+  </p>
+  <table class="simple">
+    <thead><tr><th>Day</th><th>Main · Side · Fruit</th></tr></thead>
+    <tbody>
+      <tr><td>Mon</td><td>Cheddar cubes · wholemeal crackers · grapes</td></tr>
+      <tr><td>Tue</td><td>Mini muffin · Japanese rice crackers · mandarin</td></tr>
+      <tr><td>Wed</td><td>Ham &amp; cheese pinwheel · veg sticks · strawberries</td></tr>
+      <tr><td>Thu</td><td>Cheese twists · pretzels · apple</td></tr>
+      <tr><td>Fri</td><td>Popcorn · cheddar · grapes</td></tr>
+    </tbody>
+  </table>
+  <div class="note">🧀 Dairy spread across the week — cheese Mon/Thu, pinwheel Wed. Note any reaction.</div>
+</section>
+
+<section id="shop">
+  <div class="progress-bar">
+    <span class="pct" id="pct">0%</span>
+    <div class="track"><div class="fill" id="fill"></div></div>
+    <button class="reset" onclick="resetShop()">Reset</button>
+  </div>
+
+  <div class="shop-section">
+    <h3>🥩 Proteins — all frozen, nothing to buy 🎉</h3>
+    <ul>
+      <li data-id="p-salmon"><div class="box"></div><div class="label">Salmon — already have ✓<small>the late order · use Fri, freeze the rest</small></div></li>
+      <li data-id="p-chicken"><div class="box"></div><div class="label">Chicken thighs — already frozen ✓<small>Tue tray</small></div></li>
+      <li data-id="p-pork"><div class="box"></div><div class="label">Minced pork — already frozen ✓<small>Thu bee hoon</small></div></li>
+      <li data-id="p-beef"><div class="box"></div><div class="label">Minced beef — already frozen ✓<small>Thu bee hoon (a handful) + Thu bolognese</small></div></li>
+      <li data-id="p-eggs"><div class="box"></div><div class="label">Eggs — ~2 trays<small>breakfasts + egg muffins + tamagoyaki + pancakes + the bee hoon egg</small></div></li>
+      <li data-id="p-whey"><div class="box"></div><div class="label">Whey isolate / Greek yogurt<small>my topper + Tue/Sat breakfast — restock</small></div></li>
+    </ul>
+  </div>
+
+  <div class="shop-section">
+    <h3>🍠 Carbs (the non-rice ones)</h3>
+    <ul>
+      <li data-id="c-sweetpotato"><div class="box"></div><div class="label">Sweet potatoes — ~2–3<small>Tue fries · + cornflour for crisp (check pantry)</small></div></li>
+      <li data-id="c-beehoon"><div class="box"></div><div class="label">Rice vermicelli (bee hoon)<small>Thu lunch</small></div></li>
+      <li data-id="c-spaghetti"><div class="box"></div><div class="label">Spaghetti<small>Thu dinner</small></div></li>
+      <li data-id="c-rice"><div class="box"></div><div class="label">Rice — check level<small>Fri only now</small></div></li>
+    </ul>
+  </div>
+
+  <div class="shop-section">
+    <h3>🍎 Produce &amp; fruit</h3>
+    <ul>
+      <li data-id="v-medley"><div class="box"></div><div class="label">Capsicum · zucchini · cherry tomato · red onion<small>Tue tray medley</small></div></li>
+      <li data-id="v-soffritto"><div class="box"></div><div class="label">Carrot · celery · onion<small>Thu bolognese base — check pantry</small></div></li>
+      <li data-id="v-bokchoy"><div class="box"></div><div class="label">Baby bok choy<small>Fri salmon side</small></div></li>
+      <li data-id="v-spinach"><div class="box"></div><div class="label">Spinach + cucumber / a green<small>Thu bee hoon</small></div></li>
+      <li data-id="v-aromatics"><div class="box"></div><div class="label">Spring onions ×2<small>bee hoon + garnish</small></div></li>
+      <li data-id="f-fruit"><div class="box"></div><div class="label">Grapes ×2 · mandarins · strawberries · apples · bananas<small>snack + breakfast fruit</small></div></li>
+    </ul>
+  </div>
+
+  <div class="shop-section">
+    <h3>🍅 Pantry / cooking</h3>
+    <ul>
+      <li data-id="b-tomato"><div class="box"></div><div class="label">Canned tomatoes / passata + tomato paste<small>bolognese</small></div></li>
+      <li data-id="b-parm"><div class="box"></div><div class="label">Parmesan<small>bolognese — optional</small></div></li>
+      <li data-id="b-asian"><div class="box"></div><div class="label">Soy · mirin · sesame oil — check<small>bee hoon + salmon glaze</small></div></li>
+      <li data-id="b-glaze"><div class="box"></div><div class="label">Miso paste / teriyaki — check<small>Fri salmon</small></div></li>
+      <li data-id="b-oil"><div class="box"></div><div class="label">Garlic-infused oil · olive oil — check<small>my gut-safe cooking + soffritto</small></div></li>
+      <li data-id="b-cornflour"><div class="box"></div><div class="label">Cornflour — check<small>crisps the sweet potato fries</small></div></li>
+      <li data-id="b-paper"><div class="box"></div><div class="label">Baking paper — check the roll<small>lined trays</small></div></li>
+      <li data-id="b-tray"><div class="box"></div><div class="label">A second oven tray (if there's only one)<small>Tue: chicken + fries on separate trays</small></div></li>
+    </ul>
+  </div>
+
+  <div class="shop-section">
+    <h3>🥐 Breakfast pantry</h3>
+    <ul>
+      <li data-id="bp-oats"><div class="box"></div><div class="label">Rolled oats · chia<small>pancakes + overnight oats</small></div></li>
+      <li data-id="bp-pb"><div class="box"></div><div class="label">Peanut butter · mixed berries · milk — check</div></li>
+      <li data-id="bp-cottage"><div class="box"></div><div class="label">Cottage cheese<small>Thu low-carb top-up</small></div></li>
+      <li data-id="bp-veg"><div class="box"></div><div class="label">Bell pepper · spinach<small>egg-muffin veg</small></div></li>
+    </ul>
+  </div>
+
+  <div class="shop-section">
+    <h3>🎒 Snack + recess restock</h3>
+    <ul>
+      <li data-id="s-muffin"><div class="box"></div><div class="label">Mini muffins<small>Tue main</small></div></li>
+      <li data-id="s-twists"><div class="box"></div><div class="label">Cheese twists<small>Thu main</small></div></li>
+      <li data-id="s-popcorn"><div class="box"></div><div class="label">Popcorn mini-bags<small>Fri main</small></div></li>
+      <li data-id="s-pinwheel"><div class="box"></div><div class="label">Tortilla wraps · ham · cheddar<small>Wed pinwheel + cheese snacks</small></div></li>
+      <li data-id="s-sides"><div class="box"></div><div class="label">Japanese rice crackers · pretzels · crackers<small>snack sides — check pantry</small></div></li>
+    </ul>
+  </div>
+</section>
+
+<div class="footer-note">a full table, a clean kitchen · make it a beautiful week ✶</div>
+
+</main>
+
+<script>
+const STORE_KEY = 'weekly-w10-shop-v3';
+
+// Tabs
+document.querySelectorAll('nav.tabs button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tab = btn.dataset.tab;
+    document.querySelectorAll('nav.tabs button').forEach(b => b.classList.toggle('active', b === btn));
+    document.querySelectorAll('section').forEach(s => s.classList.toggle('active', s.id === tab));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+// Shopping checklist
+function getState() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY) || '{}'); } catch { return {}; }
+}
+function setState(s) {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(s)); } catch {}
+}
+function updateProgress() {
+  const items = document.querySelectorAll('.shop-section li');
+  const done = document.querySelectorAll('.shop-section li.done').length;
+  const pct = items.length ? Math.round((done / items.length) * 100) : 0;
+  document.getElementById('pct').textContent = pct + '%';
+  document.getElementById('fill').style.width = pct + '%';
+}
+function applyState() {
+  const s = getState();
+  document.querySelectorAll('.shop-section li').forEach(li => {
+    if (s[li.dataset.id]) li.classList.add('done');
+  });
+  updateProgress();
+}
+document.querySelectorAll('.shop-section li').forEach(li => {
+  li.addEventListener('click', () => {
+    li.classList.toggle('done');
+    const s = getState();
+    s[li.dataset.id] = li.classList.contains('done');
+    setState(s);
+    updateProgress();
+  });
+});
+function resetShop() {
+  if (!confirm('Reset all checkboxes?')) return;
+  localStorage.removeItem(STORE_KEY);
+  document.querySelectorAll('.shop-section li').forEach(li => li.classList.remove('done'));
+  updateProgress();
+}
+applyState();
+</script>
+
+</body>
+</html>
