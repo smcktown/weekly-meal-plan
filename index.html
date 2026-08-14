@@ -71,6 +71,7 @@ p.lede{color:var(--mute);margin:0 0 1.2rem;font-size:.92rem}
 .pill.fry{background:var(--navy);color:var(--pearl)}
 .pill.iron{background:var(--pink);color:var(--navy)}
 .pill.out{background:transparent;border:1.5px solid var(--rule);color:var(--mute)}
+.pill.vitc{background:#FFF0B8;color:#7A5C00}
 
 table{width:100%;border-collapse:collapse;font-size:.9rem;margin:.3rem 0 1rem}
 th{text-align:left;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--lav-deep);
@@ -117,81 +118,60 @@ footer{text-align:center;font-family:'Caveat',cursive;font-size:1.15rem;color:va
 </header>
 
 <nav class="weeks">
-  <button data-week="w10">This week<b>27 Jul – 2 Aug</b></button>
-  <button data-week="w11" class="active">Next week<b>3 – 9 Aug</b></button>
+  <button data-week="wA">This week<b>10 – 16 Aug</b></button>
+  <button data-week="wB" class="active">Next week<b>17 – 23 Aug</b></button>
 </nav>
 
-<!-- ==================== W10 ==================== -->
-<div class="week" id="w10">
+<!-- ==================== THIS WEEK ==================== -->
+<div class="week" id="wA">
 <nav class="tabs">
-  <button data-tab="w10-cook" class="active">🍽 Cooking</button>
-  <button data-tab="w10-shop">🛒 Shopping</button>
+  <button data-tab="wA-cook" class="active">🍽 Cooking</button>
 </nav>
 <main>
-  <section id="w10-cook" class="active">
-    <h2 class="sec">What's left this week</h2>
-    <p class="lede">Most of it is done — two days to go.</p>
-    <div class="day">
-      <div class="d">Thursday</div>
-      <h3>Minced pork &amp; beef bee hoon · beef bolognese</h3>
-      <p>Lunch and dinner. Split dinner — younger two eat ~6pm, the rest ~7pm.</p>
-      <div class="pills"><span class="pill iron">iron ×2</span><span class="pill">split dinner</span></div>
-    </div>
-    <div class="day">
-      <div class="d">Friday</div>
-      <h3>Teriyaki salmon + rice + bok choy</h3>
-      <p>The one fish-safe night of the week — nothing else on.</p>
-      <div class="pills"><span class="pill">fish night</span></div>
-    </div>
+  <section id="wA-cook" class="active">
+    <h2 class="sec">This week</h2>
+    <p class="lede">Nothing was planned — the week back.</p>
+    <div class="banner">No plan was drafted for this week. Play it by ear and put the effort into next week instead — <b>its list is on the other tab, and the shop is Saturday.</b></div>
     <div class="day">
       <div class="d">Saturday</div>
-      <h3>Friends over — separate menu</h3>
-      <p>Air-fryer chicken sandwiches, two sauces, pear galette. Shop for this and next week in one run.</p>
-      <div class="pills"><span class="pill fry">air fryer</span></div>
+      <h3>Shop for next week</h3>
+      <p>The full list is under <b>Next week → Shopping</b>. Worth doing properly — the Saturday after is completely booked, so there's no second chance.</p>
+      <div class="pills"><span class="pill">shop</span></div>
     </div>
-    <div class="day">
-      <div class="d">Sunday</div>
-      <h3>Out</h3>
-      <div class="pills"><span class="pill out">no cook</span></div>
-    </div>
-  </section>
-  <section id="w10-shop">
-    <h2 class="sec">Shopping</h2>
-    <p class="lede">This week's list is done — switch to <b>Next week</b> for the one that matters now.</p>
-    <div class="note">Saturday's shop should cover <b>both</b> the dinner party and next week. Next week's list is on the other tab.</div>
   </section>
 </main>
 </div>
 
-<!-- ==================== W11 ==================== -->
-<div class="week active" id="w11">
+<!-- ==================== NEXT WEEK ==================== -->
+<div class="week active" id="wB">
 <nav class="tabs">
-  <button data-tab="w11-cook" class="active">🍽 Cooking</button>
-  <button data-tab="w11-brek">🥚 Breakfasts</button>
-  <button data-tab="w11-snack">🍎 Snacks</button>
-  <button data-tab="w11-shop">🛒 Shopping</button>
+  <button data-tab="wB-cook" class="active">🍽 Cooking</button>
+  <button data-tab="wB-brek">🥚 Breakfasts</button>
+  <button data-tab="wB-snack">🍎 Snacks</button>
+  <button data-tab="wB-shop">🛒 Shopping</button>
 </nav>
 <main>
 
-  <section id="w11-cook" class="active">
-    <h2 class="sec">Cooking · 3 – 9 Aug</h2>
-    <p class="lede">Three cooks. The air fryer does two of them.</p>
-    <div class="banner"><b>Short week — no cooking Fri, Sat or Sun.</b> The job is to run the fridge down to nothing by Thursday night. Buy nothing fresh that has to survive past Thursday.</div>
+  <section id="wB-cook" class="active">
+    <h2 class="sec">Cooking · 17 – 23 Aug</h2>
+    <p class="lede">Three cooks. One of them cooks twice.</p>
+    <div class="banner"><b>The trick this week:</b> Tuesday's braise gets made at one-and-a-half times, and the leftover becomes Thursday's second filling. One pot, two dinners, and the iron stays where it needs to be.</div>
 
     <div class="day">
       <div class="d">Monday</div>
       <h3>Out</h3>
-      <p>Swimming in the afternoon.</p>
+      <p>Busy morning, activity in the afternoon.</p>
       <div class="pills"><span class="pill out">no cook</span></div>
     </div>
 
     <div class="day">
       <div class="d">Tuesday · dinner</div>
-      <h3>Air-fryer chicken katsu</h3>
-      <p>Breast flattened even, flour → egg → panko. <b>195 °C, 12–14 min, flip at 7.</b> Spray well — panko needs oil to colour. Rice + cucumber salad, sauce on the side, one plain portion for the little one.</p>
-      <p><b>Two staggered baskets:</b> first in at 5:35 for the 6pm eaters, second straight from the fridge at 6:35 so it's fresh at 7.</p>
-      <p><b>Two veg:</b> bok choy boiled with salt · <b>capsicum + zucchini air-fried 200 °C for 10 min</b> — do these <b>first</b>, while breading, so the basket is free for both katsu batches.</p>
-      <div class="pills"><span class="pill fry">air fryer</span><span class="pill">split dinner</span><span class="pill">rice</span><span class="pill">2 veg</span></div>
+      <h3>Braised beef rice bowls</h3>
+      <p>Sliced beef simmered in dashi, soy, mirin and a little maple. <b>Build it onion-free</b> — infused oil and the green tops only; wilt onion into the other portions at the end if anyone wants it, not into the pot.</p>
+      <p><b>Make about one-and-a-half times what you'd normally cook.</b> Cool the extra and fridge it — it's Thursday's second filling and it saves a whole cook.</p>
+      <p><b>Why a braise and not a stir-fry:</b> it sits at a bare simmer through the early and late sittings and gets better, where a stir-fry dies. Rice cooker on keep-warm.</p>
+      <p><b>Two veg:</b> bok choy boiled with salt · <b>red capsicum roasted</b> — the capsicum is doing real work next to the beef, not decoration.</p>
+      <div class="pills"><span class="pill iron">iron ★</span><span class="pill vitc">vit C</span><span class="pill">split dinner</span><span class="pill">rice</span><span class="pill">2 veg</span><span class="pill">cook 1.5×</span></div>
     </div>
 
     <div class="day">
@@ -202,110 +182,134 @@ footer{text-align:center;font-family:'Caveat',cursive;font-size:1.15rem;color:va
 
     <div class="day">
       <div class="d">Thursday · lunch</div>
-      <h3>Beef &amp; egg fried rice</h3>
-      <p>The fridge clear-out. <b>Use whatever vegetables are left</b> — that's the point. Brown the mince first, set aside, then day-old rice, eggs and veg back in with it. Wok is fine at lunchtime.</p>
-      <div class="pills"><span class="pill iron">iron ★</span><span class="pill">rice</span></div>
+      <h3>Out</h3>
+      <div class="pills"><span class="pill out">no cook</span></div>
     </div>
 
     <div class="day">
       <div class="d">Thursday · dinner</div>
-      <h3>Mild lamb &amp; vegetable meatballs</h3>
-      <p>Minced lamb + <b>grated zucchini and carrot</b>, bound with a little egg and breadcrumb. Season with <b>salt, pepper and a little ginger — that's all.</b> No cumin, no coriander seed, no chilli: lamb is already strong, and spicing on top is what gets it rejected.</p>
-      <p><b>The grated veg does two jobs</b> — vegetables without negotiation, and it softens the lamb so it tastes closer to a beef meatball. Roll into balls, not skewers: "meatball" is an easier sell. <b>190 °C, 12–14 min, turn once.</b></p>
-      <p><b>Flavour for the grown-ups goes in a dip, not the meat</b> — yogurt with lemon and mint, or leftover sticky soy glaze.</p>
-      <p><b>Two veg:</b> bok choy boiled with salt · <b>capsicum air-fried 200 °C, 10 min.</b> <b>Potatoes go in the big oven</b> (200 °C, 35 min, then hold at 100 °C) — the basket already has two jobs and potatoes don't mind waiting.</p>
-      <p><b>Basket order:</b> capsicum → first batch of meatballs → second batch from the fridge for the 7pm eaters.</p>
-      <div class="pills"><span class="pill fry">air fryer</span><span class="pill iron">iron ★</span><span class="pill">split dinner</span><span class="pill">potato</span><span class="pill">2 veg</span></div>
-      <div class="note"><b>No wok, no fry tonight</b> — people are coming at 8pm and the kitchen has to be clean. Everything here is basket-and-tray. Wipe down while the second batch runs.</div>
+      <h3>Build-your-own wraps — crisp chicken legs &amp; Tuesday's beef</h3>
+      <p><b>The skin-on legs from the freezer.</b> Move them to the fridge Wednesday morning to thaw. Air fryer, <b>200 °C, 25–30 min, skin side up.</b> The skin renders and crisps itself — no oil in a pan, nothing to wipe off the floor.</p>
+      <p><b>The wrap is the carb — there is nothing else to cook.</b> No potatoes, no rice, no second tray. Warm the tortillas in the basket for 30 seconds once the chicken is out.</p>
+      <p><b>Set it out and walk away:</b> chicken pulled off the bone into a bowl, the braised beef alongside, lettuce, capsicum strips, tortillas. Self-serve at the early sitting and again at the late one — <b>no reheating and no timing at all.</b></p>
+      <p>🌽 <b>Corn tortillas, not flour.</b> Warmed through they're soft enough that nobody notices, and they're the gentler option when you're eating two or three. One pack for the whole table.</p>
+      <p><b>Two veg:</b> 🥬 <b>lettuce salad</b> · <b>red capsicum raw in the wrap</b> — raw keeps more of the vitamin C than roasting does.</p>
+      <p><b>Cook extra legs.</b> Shredded chicken makes Saturday lunch free, and Saturday morning is gone.</p>
+      <div class="pills"><span class="pill fry">air fryer</span><span class="pill iron">iron ★</span><span class="pill vitc">vit C</span><span class="pill">split dinner</span><span class="pill">wraps</span><span class="pill">2 veg</span></div>
+      <div class="note"><b>No wok, no frying tonight</b> — people arrive at 8pm and the kitchen has to be clean. Everything here is basket-and-board. This is the lowest-effort version of this night you've had.</div>
     </div>
 
     <div class="day">
-      <div class="d">Friday – Sunday</div>
-      <h3>Away — no cooking</h3>
+      <div class="d">Friday · dinner</div>
+      <h3>Miso-glazed salmon + sweet potato fries</h3>
+      <p>The only fish-safe night — nothing else is on.</p>
+      <p><b>Fries:</b> cut into batons, tossed in olive oil and a light dusting of cornflour for crisp, <b>on their own lined tray</b> at 220 °C, flipped halfway. Keeping them off the salmon tray is what stops them going soft.</p>
+      <p><b>Two veg:</b> broccoli steamed · spinach wilted. Lemon over the fish.</p>
+      <div class="pills"><span class="pill vitc">vit C</span><span class="pill">fish night</span><span class="pill">sweet potato</span><span class="pill">2 veg</span></div>
+      <div class="note">Keep your own portion of the fries on the modest side — sweet potato is one of the ones that turns unfriendly in a big serving. A handful is fine.</div>
+    </div>
+
+    <div class="day">
+      <div class="d">Saturday</div>
+      <h3>Leftovers — no cook</h3>
+      <p>Sport first thing, then straight out. The morning is gone. Thursday's extra chicken covers lunch.</p>
       <div class="pills"><span class="pill out">no cook</span></div>
     </div>
 
-    <div class="note"><b>Why the air fryer, twice.</b> Both cook nights are the 5–7pm scramble — the exact problem it was bought for. It's hands-off, it takes two staggered baskets for the split dinner, and it doesn't splatter.</div>
+    <div class="day">
+      <div class="d">Sunday</div>
+      <h3>Out — family dinner</h3>
+      <p>Sport in the afternoon, then dinner out. Same road, so no travel problem.</p>
+      <div class="pills"><span class="pill out">no cook</span></div>
+    </div>
+
+    <div class="note">🍋 <b>Every protein dinner carries a vitamin-C vegetable and something leafy.</b> Capsicum twice, broccoli once — plus bok choy, lettuce and spinach. The vitamin C is what makes the iron in the meal actually count, so treat it as part of the dish and not a side you can skip.</div>
+    <div class="note">☕ <b>Keep coffee and tea about an hour clear of Tuesday and Thursday dinner.</b> Those are the two that matter.</div>
   </section>
 
-  <section id="w11-brek">
+  <section id="wB-brek">
     <h2 class="sec">Breakfasts</h2>
-    <p class="lede">Rebuilt around the one egg format that actually gets eaten.</p>
-    <div class="banner">🥚 <b>The egg rules.</b> ① <b>No eggs in the school box</b> — they don't get eaten. ② <b>School mornings: boiled or soft-boiled only</b> — no scrambled, omelette, tamagoyaki, frittata or egg muffins, which retires most of last week's rotation. ③ <b>Weekends: scrambled is fine</b> — they'll eat it when there's no rush.</div>
+    <p class="lede">Make-ahead only on school mornings.</p>
+    <div class="banner">🥚 <b>The egg rules.</b> ① <b>No eggs in the school box</b> — they don't get eaten. ② <b>School mornings: boiled or soft-boiled only</b> — no scrambled, omelette, tamagoyaki, frittata or egg muffins. ③ <b>Weekends: scrambled is fine.</b></div>
     <table>
       <tr><th>Day</th><th>Breakfast</th><th>Made ahead</th></tr>
-      <tr><td>Mon</td><td><b>Overnight oats + banana</b></td><td>made Sun night</td></tr>
-      <tr><td>Tue</td><td><b>Soft-boiled eggs + toast soldiers</b> + fruit</td><td>6 min in the pot</td></tr>
-      <tr><td>Wed</td><td><b>Peanut butter toast</b> + fruit</td><td>~1 min</td></tr>
-      <tr><td>Thu</td><td><b>Ajitsuke tamago</b> + rice + furikake</td><td>marinated Sun night</td></tr>
-      <tr><td>Fri</td><td>Clear-out — finish what's left, or eat out</td><td>—</td></tr>
+      <tr><td>Mon</td><td><b>Ajitsuke tamago</b> + toast</td><td>marinated Sun night</td></tr>
+      <tr><td>Tue</td><td><b>Overnight oats</b> + banana</td><td>Mon night</td></tr>
+      <tr><td>Wed</td><td><b>Ajitsuke tamago</b> + fruit</td><td>from Sunday's batch</td></tr>
+      <tr><td>Thu</td><td><b>Overnight oats</b> + berries</td><td>Wed night</td></tr>
+      <tr><td>Fri</td><td><b>Protein pancakes</b></td><td>batter made Thu night</td></tr>
+      <tr><td>Sat</td><td>Overnight oats + a boiled egg</td><td>early — sport at 8</td></tr>
+      <tr><td>Sun</td><td>🍳 <b>Scrambled eggs</b> + toast</td><td>weekend, so scrambled is allowed</td></tr>
     </table>
-    <div class="note"><b>Ajitsuke tamago is the trick worth learning.</b> Soft-boil 6 minutes, ice bath, peel, then sit overnight in equal parts soy, mirin and water. Keeps 3–4 days. Same egg they already accept, completely different taste — that's how the rotation gets variety without fighting anyone on texture.</div>
-    <div class="note"><b>Eggs on two school mornings, not four</b> — both in forms that get eaten. The other two are oats and toast.</div>
-    <div class="note">🍳 <b>Weekends are where scrambled lives.</b> From next week, Saturday and Sunday carry the egg variety. <i>(No weekend at home this week.)</i></div>
-    <div class="note"><b>Sunday night:</b> boil eight. Six get marinated for Thursday; the rest cover Tuesday.</div>
+    <div class="note"><b>Sunday night: boil eight.</b> Six get marinated in equal parts soy, mirin and water — those cover Monday and Wednesday. The rest cover Saturday.</div>
+    <div class="note"><b>Oats twice on purpose.</b> It's the soluble-fibre breakfast, and it breaks up the egg run without breaking the make-ahead rule.</div>
+    <div class="note">Pour the plain base <b>before</b> any protein powder or peanut butter goes in — the younger ones get it unfortified.</div>
   </section>
 
-  <section id="w11-snack">
+  <section id="wB-snack">
     <h2 class="sec">Snack boxes</h2>
     <p class="lede">Packed the night before · main · side · fruit</p>
     <table>
       <tr><th>Day</th><th>Main · Side · Fruit</th></tr>
-      <tr><td>Mon</td><td>Ham &amp; cheese roll-ups · cucumber sticks · grapes</td></tr>
-      <tr><td>Tue</td><td>Popcorn · pretzels · blueberries</td></tr>
-      <tr><td>Wed</td><td>Mini muffin · Japanese rice crackers · strawberries</td></tr>
-      <tr><td>Thu</td><td><b>Clear-out box</b> — whatever crackers and fruit are left</td></tr>
-      <tr><td>Fri</td><td>None — early dismissal</td></tr>
+      <tr><td>Mon</td><td>Ham &amp; cheese pinwheel · cucumber sticks · grapes</td></tr>
+      <tr><td>Tue</td><td>Mini muffin · pretzels · blueberries</td></tr>
+      <tr><td>Wed</td><td>Crackers + cheddar · popcorn · strawberries</td></tr>
+      <tr><td>Thu</td><td>Ham pinwheel · Japanese rice crackers · grapes</td></tr>
+      <tr><td>Fri</td><td>Mini muffin · pretzels · orange segments</td></tr>
     </table>
-    <div class="note">🚫 <b>No eggs in the box</b> — they don't come home eaten. <b>Cheese is down to one day from four.</b> Note any reaction as usual.</div>
-    <div class="note">⚠️ <b>Check the nut policy before packing peanut butter.</b> It's in Thursday's breakfast, which is fine at home — keep it out of the box unless nuts are allowed.</div>
+    <div class="note">🚫 <b>No eggs in the box</b> — they don't come home eaten. <b>Cheese on one day only.</b> Note any reaction as usual.</div>
+    <div class="note">Breakfast carb avoids that day's box carb — that's why the muffins and the pancakes don't land together.</div>
   </section>
 
-  <section id="w11-shop">
-    <h2 class="sec">Shopping · next week</h2>
-    <p class="lede">Buy Saturday, alongside the dinner-party list. Ticks save on this device.</p>
+  <section id="wB-shop">
+    <h2 class="sec">Shopping · Saturday 15th</h2>
+    <p class="lede">Do it properly — the Saturday after is fully booked. Ticks save on this device.</p>
     <div class="count"><span id="done">0</span> of <span id="total">0</span></div>
     <div class="bar"><i id="fill"></i></div>
 
     <div class="grp"><h3>Proteins</h3>
-      <label class="item"><input type="checkbox"><span>Chicken breast ×4–5 <em>Tue katsu</em></span></label>
-      <label class="item"><input type="checkbox"><span>Minced beef 300 g <em>Thu lunch — check the freezer first</em></span></label>
-      <label class="item"><input type="checkbox"><span>Minced lamb 500 g <em>Thu dinner</em></span></label>
-    </div>
-
-    <div class="grp"><h3>Eggs &amp; breakfast</h3>
-      <label class="item"><input type="checkbox"><span><b>Eggs ×12</b> <em>2 school breakfasts, the marinated batch, fried rice, and binding the meatballs</em></span></label>
-      <label class="item"><input type="checkbox"><span>Rolled oats <em>check first</em></span></label>
-      <label class="item"><input type="checkbox"><span>Bananas ×5 <em>firm, not spotty</em></span></label>
-      <label class="item"><input type="checkbox"><span>Furikake <em>check first</em></span></label>
-      <label class="item"><input type="checkbox"><span>Mirin <em>also for the egg marinade</em></span></label>
+      <label class="item"><input type="checkbox"><span><b>Chicken legs — already in the freezer</b> <em>nothing to buy · move to the fridge Wednesday to thaw · cook extra for Saturday</em></span></label>
+      <label class="item"><input type="checkbox"><span>🔺 <b>Sliced beef — buy about 1.5× the usual</b> <em>one braise feeds Tuesday and Thursday · check the freezer first</em></span></label>
+      <label class="item"><input type="checkbox"><span>Salmon ×5 fillets <em>Friday · check the freezer first</em></span></label>
+      <label class="item"><input type="checkbox"><span>Eggs ×1 tray <em>the marinated batch + breakfasts</em></span></label>
     </div>
 
     <div class="grp"><h3>Vegetables</h3>
-      <label class="item"><input type="checkbox"><span><b>Bok choy ×2 bunches</b> <em>one per dinner, boiled with salt</em></span></label>
-      <label class="item"><input type="checkbox"><span><b>Capsicum ×3</b> <em>air-fried at both dinners</em></span></label>
-      <label class="item"><input type="checkbox"><span><b>Zucchini ×2</b> <em>one air-fried Tue, one grated into the meatballs</em></span></label>
-      <label class="item"><input type="checkbox"><span>Lady fingers ×1 pack <em>optional — air-fries crisp, not slimy</em></span></label>
-      <label class="item"><input type="checkbox"><span>Cucumber ×2 <em>Tue salad + snack sticks</em></span></label>
-      <label class="item"><input type="checkbox"><span>Baby potatoes 800 g</span></label>
-      <label class="item"><input type="checkbox"><span><b>Carrot ×2</b> <em>one grated into the meatballs, one for the fried rice</em></span></label>
+      <label class="item"><input type="checkbox"><span>⭐ <b>Red capsicum ×4–5</b> <em>roasted Tuesday, raw in Thursday's wraps</em></span></label>
+      <label class="item"><input type="checkbox"><span>🥬 <b>Cos or butterhead lettuce ×2</b> <em>Thursday salad + wrap leaves</em></span></label>
+      <label class="item"><input type="checkbox"><span><b>Broccoli ×2 heads</b> <em>Friday</em></span></label>
+      <label class="item"><input type="checkbox"><span>Baby spinach ×1 bag <em>Friday</em></span></label>
+      <label class="item"><input type="checkbox"><span>Bok choy ×1 bunch <em>Tuesday, boiled with salt</em></span></label>
+      <label class="item"><input type="checkbox"><span>🍠 <b>Sweet potatoes ×3–4</b> <em>Friday fries</em></span></label>
+      <label class="item"><input type="checkbox"><span>Cherry tomatoes ×1 punnet · cucumber ×2</span></label>
       <label class="item"><input type="checkbox"><span>Spring onions ×1 bunch</span></label>
     </div>
 
-    <div class="grp"><h3>Snack box</h3>
-      <label class="item"><input type="checkbox"><span>Grapes · blueberries · strawberries <em>all gone by Thursday</em></span></label>
-      <label class="item"><input type="checkbox"><span>Chicken ham ×1 pack</span></label>
-      <label class="item"><input type="checkbox"><span>Japanese rice crackers · popcorn · pretzels · mini muffins · cheddar</span></label>
+    <div class="grp"><h3>Carbs</h3>
+      <label class="item"><input type="checkbox"><span>🌽 <b>Corn tortillas ×2 packs</b> <em>corn, not flour — this is the whole carb for Thursday</em></span></label>
+      <label class="item"><input type="checkbox"><span>Rice <em>Tuesday only · check first</em></span></label>
+      <label class="item"><input type="checkbox"><span>Rolled oats <em>check first</em></span></label>
+      <label class="item"><input type="checkbox"><span>Cornflour <em>for the fries · check first</em></span></label>
     </div>
 
-    <div class="grp"><h3>Others</h3>
-      <label class="item"><input type="checkbox"><span>Panko breadcrumbs</span></label>
-      <label class="item"><input type="checkbox"><span>Tonkatsu sauce <em>or ketchup + Worcestershire + soy + sugar</em></span></label>
+    <div class="grp"><h3>Pantry — buy only if low</h3>
+      <label class="item"><input type="checkbox"><span>⚠️ <b>Infused oil</b> <em>check the bottle isn't running out</em></span></label>
+      <label class="item"><input type="checkbox"><span>Dashi or kombu · soy · mirin · maple syrup · sesame oil</span></label>
+      <label class="item"><input type="checkbox"><span>Miso <em>Friday glaze</em> · lemons ×2 · olive oil</span></label>
+      <label class="item"><input type="checkbox"><span>Protein powder <em>check stock — two days lean on it</em></span></label>
+    </div>
+
+    <div class="grp"><h3>Breakfast &amp; snack box</h3>
+      <label class="item"><input type="checkbox"><span>Bananas ×5 <em>firm, not spotty</em> · berries · grapes · oranges</span></label>
+      <label class="item"><input type="checkbox"><span>Chicken ham ×1 pack · cheddar</span></label>
+      <label class="item"><input type="checkbox"><span>Crackers · rice crackers · popcorn · pretzels · mini muffins</span></label>
+      <label class="item"><input type="checkbox"><span>Bread <em>toast, two breakfasts</em></span></label>
     </div>
 
     <button class="reset" id="reset">Clear all ticks</button>
 
-    <div class="note"><b>Do not buy</b> milk, bread, fruit or salad leaves beyond what's eaten by Thursday. Thursday night is a fridge audit — eat it, freeze it, or bin it. Skip the usual staples top-up entirely this week.</div>
+    <div class="note"><b>Dropped from the usual list:</b> rice vermicelli, minced beef, baby potatoes, zucchini and kai lan. Thursday's lunch came off the plan and the wraps replaced the potatoes, so none of it is needed.</div>
+    <div class="note">⚠️ <b>This is the shop that counts.</b> The following Saturday runs straight from sport into being out — there's no window to top up. Anything forgotten has to wait for a Friday-evening run.</div>
   </section>
 
 </main>
@@ -314,7 +318,7 @@ footer{text-align:center;font-family:'Caveat',cursive;font-size:1.15rem;color:va
 <footer>Two weeks, one page.</footer>
 
 <script>
-const KEY = 'weekly-w11-shop-v2';
+const KEY = 'weekly-w13-shop-v1';
 
 document.querySelectorAll('nav.weeks button').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -336,7 +340,7 @@ document.querySelectorAll('nav.tabs').forEach(nav => {
   });
 });
 
-const boxes = [...document.querySelectorAll('#w11-shop input[type=checkbox]')];
+const boxes = [...document.querySelectorAll('#wB-shop input[type=checkbox]')];
 const fill = document.getElementById('fill'), doneEl = document.getElementById('done');
 document.getElementById('total').textContent = boxes.length;
 const save = () => localStorage.setItem(KEY, JSON.stringify(boxes.map(b => b.checked)));
