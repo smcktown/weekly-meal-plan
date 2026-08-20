@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Meal Plan">
+<title>Meal Plan · This week &amp; next</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Caveat:wght@400;600&display=swap');
+
+:root{--navy:#1D2B4F;--lavender:#C5B4E3;--pink:#F19FC2;--pearl:#FAF8FF;--ink:#1A1A2E;
+  --mist:#EDE8F7;--lav-deep:#8E76BE;--rule:#DFD8EE;--mute:#6A6480}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--pearl)}
+body{font-family:'Nunito',-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;
+  color:var(--ink);font-size:15px;line-height:1.55;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) calc(env(safe-area-inset-bottom) + 1rem) env(safe-area-inset-left)}
+
+header{background:var(--navy);color:var(--pearl);padding:1.5rem 1.2rem 1.1rem;position:relative;overflow:hidden}
+header::after{content:"";position:absolute;right:-70px;top:-90px;width:230px;height:230px;border-radius:50%;
+  background:radial-gradient(circle,rgba(197,180,227,.25),transparent 68%)}
+header .brand{font-family:'Caveat',cursive;font-size:1.35rem;color:var(--lavender);line-height:1;position:relative;z-index:1}
+header h1{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.85rem;margin:.25rem 0 .1rem;
+  color:var(--pearl);position:relative;z-index:1}
+header .meta{font-size:.72rem;color:var(--lavender);text-transform:uppercase;letter-spacing:.13em;
+  font-weight:700;position:relative;z-index:1}
+
+/* week switcher */
+nav.weeks{background:var(--navy);padding:0 .8rem 1rem;display:flex;gap:.5rem;position:relative;z-index:1}
+nav.weeks button{flex:1 1 0;background:rgba(250,248,255,.09);border:1.5px solid rgba(197,180,227,.45);
+  color:var(--lavender);font-family:inherit;font-size:.8rem;font-weight:700;padding:.55rem .5rem;
+  border-radius:10px;cursor:pointer;line-height:1.25;transition:.15s}
+nav.weeks button b{display:block;font-size:.92rem;color:#fff;font-weight:800}
+nav.weeks button.active{background:var(--pearl);border-color:var(--pearl);color:var(--navy)}
+nav.weeks button.active b{color:var(--navy)}
+nav.weeks button:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
+
+nav.tabs{position:sticky;top:0;z-index:10;background:var(--pearl);display:flex;gap:.4rem;
+  padding:.7rem .6rem;border-bottom:1px solid var(--mist);overflow-x:auto;-webkit-overflow-scrolling:touch}
+nav.tabs button{flex:0 0 auto;background:transparent;border:1.5px solid var(--lavender);color:var(--navy);
+  font-family:inherit;font-size:.82rem;font-weight:700;padding:.4rem .8rem;border-radius:999px;
+  cursor:pointer;white-space:nowrap;transition:.15s}
+nav.tabs button.active{background:var(--navy);color:var(--pearl);border-color:var(--navy)}
+nav.tabs button:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
+@media(min-width:820px){nav.tabs{justify-content:center}}
+
+.week{display:none}
+.week.active{display:block}
+main{padding:1.1rem 1rem 4rem;max-width:760px;margin:0 auto}
+section{display:none;animation:fade .2s ease-out}
+section.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+h2.sec{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.55rem;color:var(--navy);margin:0 0 .2rem}
+p.lede{color:var(--mute);margin:0 0 1.2rem;font-size:.92rem}
+
+.banner{background:var(--navy);color:var(--pearl);border-radius:12px;padding:.9rem 1rem;margin:0 0 1.3rem;font-size:.9rem}
+.banner b{color:var(--pink)}
+
+.day{border-top:1px solid var(--rule);padding:1rem 0}
+.day:first-of-type{border-top:0;padding-top:.2rem}
+.day .d{font-size:.68rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--lav-deep)}
+.day h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.35rem;color:var(--navy);
+  margin:.2rem 0 .3rem;line-height:1.15}
+.day p{margin:0 0 .35rem;color:#4A4A63;font-size:.92rem}
+.pills{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.45rem}
+.pill{font-size:.66rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  padding:.2rem .5rem;border-radius:999px;background:var(--mist);color:var(--lav-deep)}
+.pill.fry{background:var(--navy);color:var(--pearl)}
+.pill.iron{background:var(--pink);color:var(--navy)}
+.pill.out{background:transparent;border:1.5px solid var(--rule);color:var(--mute)}
+.pill.vitc{background:#FFF0B8;color:#7A5C00}
+
+table{width:100%;border-collapse:collapse;font-size:.9rem;margin:.3rem 0 1rem}
+th{text-align:left;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--lav-deep);
+  padding:.4rem .5rem .4rem 0;border-bottom:1px solid var(--rule)}
+td{padding:.5rem .5rem .5rem 0;border-bottom:1px dotted var(--rule);vertical-align:top}
+td:first-child{font-weight:800;color:var(--navy);white-space:nowrap;width:4.6rem}
+
+.grp{margin-bottom:1.4rem}
+.grp h3{font-size:.7rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--lav-deep);
+  margin:0 0 .45rem;padding-bottom:.28rem;border-bottom:1px solid var(--rule)}
+label.item{display:flex;gap:.6rem;align-items:flex-start;padding:.4rem 0;cursor:pointer}
+label.item input{appearance:none;flex:0 0 auto;width:19px;height:19px;margin-top:1px;border:1.8px solid var(--lavender);
+  border-radius:5px;background:#fff;cursor:pointer;position:relative}
+label.item input:checked{background:var(--navy);border-color:var(--navy)}
+label.item input:checked::after{content:"✓";position:absolute;inset:0;color:#fff;font-size:12px;font-weight:800;
+  display:flex;align-items:center;justify-content:center}
+label.item input:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
+label.item span{font-size:.92rem}
+label.item em{color:var(--mute);font-style:normal;font-size:.82rem}
+label.item input:checked ~ span{opacity:.42;text-decoration:line-through}
+.bar{background:var(--mist);border-radius:999px;height:7px;overflow:hidden;margin:.15rem 0 1.2rem}
+.bar i{display:block;height:100%;background:var(--lav-deep);width:0;transition:width .25s}
+.count{font-size:.77rem;color:var(--mute);font-weight:700;margin-bottom:.3rem}
+.reset{background:none;border:1.5px solid var(--rule);color:var(--mute);font-family:inherit;font-size:.75rem;
+  font-weight:700;padding:.35rem .75rem;border-radius:999px;cursor:pointer;margin-top:.5rem}
+
+.note{background:var(--mist);border-left:3px solid var(--pink);border-radius:0 8px 8px 0;padding:.7rem .85rem;
+  margin:1rem 0 0;font-size:.87rem;color:#4A4A63}
+.note b{color:var(--navy)}
+footer{text-align:center;font-family:'Caveat',cursive;font-size:1.15rem;color:var(--lav-deep);padding:1.4rem 1rem 2rem}
+
+@media print{nav.weeks,nav.tabs,.reset,.bar,.count{display:none}
+  .week,section{display:block!important;page-break-after:always}
+  body{background:#fff;padding:1cm}header{background:#fff;color:var(--navy);border-bottom:2px solid var(--navy)}
+  header h1,header .brand,header .meta{color:var(--navy)}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">the kitchen</div>
+  <h1>Meal Plan</h1>
+  <div class="meta">This week &amp; next</div>
+</header>
+
+<nav class="weeks">
+  <button data-week="wA">This week<b>10 – 16 Aug</b></button>
+  <button data-week="wB" class="active">Next week<b>17 – 23 Aug</b></button>
+</nav>
+
+<!-- ==================== THIS WEEK ==================== -->
+<div class="week" id="wA">
+<nav class="tabs">
+  <button data-tab="wA-cook" class="active">🍽 Cooking</button>
+</nav>
+<main>
+  <section id="wA-cook" class="active">
+    <h2 class="sec">This week</h2>
+    <p class="lede">Nothing was planned — the week back.</p>
+    <div class="banner">No plan was drafted for this week. Play it by ear and put the effort into next week instead — <b>its list is on the other tab, and the shop is Saturday.</b></div>
+    <div class="day">
+      <div class="d">Saturday</div>
+      <h3>Shop for next week</h3>
+      <p>The full list is under <b>Next week → Shopping</b>. Worth doing properly — the Saturday after is completely booked, so there's no second chance.</p>
+      <div class="pills"><span class="pill">shop</span></div>
+    </div>
+  </section>
+</main>
+</div>
+
+<!-- ==================== NEXT WEEK ==================== -->
+<div class="week active" id="wB">
+<nav class="tabs">
+  <button data-tab="wB-cook" class="active">🍽 Cooking</button>
+  <button data-tab="wB-brek">🥚 Breakfasts</button>
+  <button data-tab="wB-snack">🍎 Snacks</button>
+  <button data-tab="wB-shop">🛒 Shopping</button>
+</nav>
+<main>
+
+  <section id="wB-cook" class="active">
+    <h2 class="sec">Cooking · 17 – 23 Aug</h2>
+    <p class="lede">Three cooks. One of them cooks three times.</p>
+    <div class="banner"><b>The trick this week:</b> Tuesday's braise gets made at one-and-a-half times, and the leftover becomes Thursday's second filling. One pot, two dinners, and the iron stays where it needs to be.</div>
+
+    <div class="day">
+      <div class="d">Monday</div>
+      <h3>Out</h3>
+      <p>Busy morning, activity in the afternoon.</p>
+      <div class="pills"><span class="pill out">no cook</span></div>
+    </div>
+
+    <div class="day">
+      <div class="d">Tuesday · dinner</div>
+      <h3>Beef &amp; chicken liver donburi</h3>
+      <p><b>Thin sliced beef, with the liver in small pieces through it.</b> Soak 150 g of chicken livers in milk for 20 minutes and throw the milk away — that's what takes the metallic edge off. Cut them to about a centimetre, then <b>sear hard and fast, 60–90 seconds, and take them straight out.</b> ⚠️ Liver is the one thing here that punishes overcooking; past two minutes it turns chalky. Add them back to the bowls at the very end, 30 seconds to warm through.</p>
+      <p><b>⏱ Two parts, because this is not a twenty-minute braise.</b> Thin slices toughen in a long simmer and toughen again on reheating. So: <b>make the sauce base once</b> — infused oil, ginger, two finely diced capsicum softened in it, then dashi, soy, mirin and a little maple, simmered 10 minutes. Keeps a week. Then <b>cook the beef fresh in a ladle of it, four minutes, at each sitting.</b> Every sitting gets beef cooked to order instead of beef that's been sitting, and it carries the next two dinners with no reheated beef anywhere.</p>
+      <p><b>Build it onion-free</b> — infused oil, ginger and the green tops only; wilt onion into the other portions at the end if anyone wants it, not into the pot. ⚠️ <b>Check the dashi packet</b> — instant powder often carries onion and garlic.</p>
+      <p><b>The capsicum goes in, not alongside.</b> Two cooked down into the base until they vanish; <b>a third diced fresh and thrown in for the last minute</b> of each sitting, so it stays bright and sweet and keeps most of its vitamin C.</p>
+      <p><b>Buy 2× — up from one-and-a-half</b>, now that Wednesday needs feeding too. <b>Portion 1 kg of sliced beef into three bags raw before you cook anything: ~450 g tonight · ~250 g Wednesday · ~300 g Thursday.</b> Raw sliced beef keeps two days, so <b>freeze Thursday's tonight</b> and move it down Wednesday morning. 🔒 Bag it before you cook — once it's loose in the pan it disappears, and Thursday's is the one there's no slot left to replace.</p>
+      <p><b>All the liver goes tonight.</b> It reheats badly, so there's none for Wednesday or Thursday. Tonight is the one.</p>
+      <p><b>Two veg:</b> capsicum cooked through the beef · <b>bok choy steamed, salted after</b> — lid on, 2–3 cm of water, 2–3 minutes. Steam it, don't boil it.</p>
+      <div class="pills"><span class="pill iron">iron ★★★</span><span class="pill vitc">vit C</span><span class="pill">split dinner</span><span class="pill">rice</span><span class="pill">2 veg</span><span class="pill">buy 2×</span></div>
+      <div class="note">If a piece of liver comes back on a plate, <b>leave it</b> — pushing it is how liver gets refused for good. It's meant for the adult bowls anyway.</div>
+      <div class="note"><b>Water at the table for this one</b> — no tea, no coffee, no matcha within the hour either side. A small glass of orange juice for the children rather than milk.</div>
+    </div>
+
+    <div class="day">
+      <div class="d">Wednesday · dinner</div>
+      <h3>Beef &amp; capsicum donburi + a fried egg</h3>
+      <p>🔄 <b>Wednesday's plans fell through</b>, so this turned into a cook — but not a new one. Tuesday's braise reheated over rice, <b>one fried egg each on top</b>, and whatever bok choy is left or a few slices of cucumber.</p>
+      <p><b>Ten minutes, nothing to buy, no second cook.</b> The egg is what makes it read as a different dinner rather than Tuesday again.</p>
+      <p><b>Cook the beef fresh in the reserved sauce base — four minutes.</b> Don't reheat Tuesday's; thin sliced beef reheated is the one thing that disappoints. The base is already made, so this really is a ten-minute dinner. No liver tonight — it all went yesterday.</p>
+      <p><b>Low-carb portion:</b> skip the rice, two eggs, a bigger ladle, double the greens.</p>
+      <div class="pills"><span class="pill">reheat</span><span class="pill">10 min</span><span class="pill">rice</span><span class="pill">egg</span></div>
+      <div class="note">Only four at the table tonight — cook accordingly.</div>
+    </div>
+
+    <div class="day">
+      <div class="d">Thursday · lunch</div>
+      <h3>Out</h3>
+      <div class="pills"><span class="pill out">no cook</span></div>
+    </div>
+
+    <div class="day">
+      <div class="d">Thursday · dinner</div>
+      <h3>Build-your-own wraps — crisp chicken legs &amp; Tuesday's beef</h3>
+      <p><b>The skin-on legs from the freezer.</b> Move them to the fridge Wednesday morning to thaw. Air fryer, <b>200 °C, 25–30 min, skin side up.</b> The skin renders and crisps itself — no oil in a pan, nothing to wipe off the floor.</p>
+      <p>⚠️ <b>The beef is now cooked fresh</b> — four minutes in a lidded pan of the reserved sauce base, rather than set out cold from Tuesday. <b>A lidded simmer is not a fry: no splatter, nothing on the floor.</b> This is the one cost of slicing the beef instead of mincing it — tonight gains a four-minute pan it didn't have.</p>
+      <p><b>The wrap is the carb — there is nothing else to cook.</b> No potatoes, no rice, no second tray. Warm the tortillas in the basket for 30 seconds once the chicken is out.</p>
+      <p><b>Set it out and walk away:</b> chicken pulled off the bone into a bowl, the braised beef alongside, lettuce, capsicum strips, tortillas. Self-serve at the early sitting and again at the late one — <b>no reheating and no timing at all.</b></p>
+      <p>🌽 <b>Corn tortillas, not flour.</b> Warmed through they're soft enough that nobody notices, and they're the gentler option when you're eating two or three. One pack for the whole table.</p>
+      <p><b>Two veg:</b> 🥬 <b>lettuce salad</b> · <b>red capsicum raw in the wrap</b> — raw keeps more of the vitamin C than roasting does.</p>
+      <p><b>Put a handful of baby spinach in the wraps too</b>, alongside the lettuce. Raw, no cooking, and it disappears between the chicken and the sauce — but it's the second leafy hit of the week and that one matters.</p>
+      <p><b>Cook extra legs.</b> Shredded chicken makes Saturday lunch free, and Saturday morning is gone.</p>
+      <div class="pills"><span class="pill fry">air fryer</span><span class="pill iron">iron ★</span><span class="pill vitc">vit C</span><span class="pill">split dinner</span><span class="pill">wraps</span><span class="pill">2 veg</span></div>
+      <div class="note"><b>No wok, no frying tonight</b> — people arrive at 8pm and the kitchen has to be clean. Everything here is basket-and-board. This is the lowest-effort version of this night you've had.</div>
+    </div>
+
+    <div class="day">
+      <div class="d">Friday · dinner</div>
+      <h3>Miso-glazed salmon + sweet potato fries</h3>
+      <p>The only fish-safe night — nothing else is on.</p>
+      <p><b>Fries:</b> cut into batons, tossed in olive oil and a light dusting of cornflour for crisp, <b>on their own lined tray</b> at 220 °C, flipped halfway. Keeping them off the salmon tray is what stops them going soft.</p>
+      <p><b>Two veg:</b> broccoli steamed · spinach wilted. Lemon over the fish.</p>
+      <div class="pills"><span class="pill vitc">vit C</span><span class="pill">fish night</span><span class="pill">sweet potato</span><span class="pill">2 veg</span></div>
+      <div class="note">Keep your own portion of the fries on the modest side — sweet potato is one of the ones that turns unfriendly in a big serving. A handful is fine.</div>
+    </div>
+
+    <div class="day">
+      <div class="d">Saturday</div>
+      <h3>Leftovers — no cook</h3>
+      <p>Sport first thing, then straight out. The morning is gone. Thursday's extra chicken covers lunch.</p>
+      <div class="pills"><span class="pill out">no cook</span></div>
+    </div>
+
+    <div class="day">
+      <div class="d">Sunday</div>
+      <h3>Out — family dinner</h3>
+      <p>Sport in the afternoon, then dinner out. Same road, so no travel problem.</p>
+      <div class="pills"><span class="pill out">no cook</span></div>
+    </div>
+
+    <div class="note">🍋 <b>Every protein dinner carries a vitamin-C vegetable and something leafy.</b> Capsicum twice, broccoli once — plus bok choy, lettuce and spinach. The vitamin C is what makes the iron in the meal actually count, so treat it as part of the dish and not a side you can skip.</div>
+    <div class="note">☕ <b>Keep coffee and tea about an hour clear of Tuesday and Thursday dinner.</b> Those are the two that matter.</div>
+    <div class="note">🎯 <b>What this week is built to cover.</b> Protein at every meal · <b>iron twice</b>, both with vitamin C alongside · leafy greens daily, <b>spinach on two of them</b> · <b>oily fish once</b> — take the supplement with that meal, it needs the fat to absorb · oats on two breakfasts · yogurt and hard cheese standing in the weekly staples.<br><br><b>Two soft spots, flagged not hidden:</b> iron is at the floor of two rather than three — Thursday's lunch coming off the plan cost the third — and Thursday and Friday both lean on a protein topper to clear the daily target. If you want the third iron meal back, the cheapest place is a beef or sardine lunch on a day you're home.</div>
+  </section>
+
+  <section id="wB-brek">
+    <h2 class="sec">Breakfasts</h2>
+    <p class="lede">Make-ahead only on school mornings.</p>
+    <div class="banner">🥚 <b>The egg rules.</b> ① <b>No eggs in the school box</b> — they don't get eaten. ② <b>School mornings: boiled or soft-boiled only</b> — no scrambled, omelette, tamagoyaki, frittata or egg muffins. ③ <b>Weekends: scrambled is fine.</b></div>
+    <table>
+      <tr><th>Day</th><th>Breakfast</th><th>Made ahead</th></tr>
+      <tr><td>Mon</td><td><b>Ajitsuke tamago</b> + toast</td><td>marinated Sun night</td></tr>
+      <tr><td>Tue</td><td><b>Overnight oats</b> + banana</td><td>Mon night</td></tr>
+      <tr><td>Wed</td><td><b>Ajitsuke tamago</b> + fruit</td><td>from Sunday's batch</td></tr>
+      <tr><td>Thu</td><td><b>Overnight oats</b> + berries</td><td>Wed night</td></tr>
+      <tr><td>Fri</td><td><b>Protein pancakes</b></td><td>batter made Thu night</td></tr>
+      <tr><td>Sat</td><td>Overnight oats + a boiled egg</td><td>early — sport at 8</td></tr>
+      <tr><td>Sun</td><td>🍳 <b>Scrambled eggs</b> + toast</td><td>weekend, so scrambled is allowed</td></tr>
+    </table>
+    <div class="note"><b>Sunday night: boil eight.</b> Six get marinated in equal parts soy, mirin and water — those cover Monday and Wednesday. The rest cover Saturday.</div>
+    <div class="note"><b>Oats twice on purpose.</b> It's the soluble-fibre breakfast, and it breaks up the egg run without breaking the make-ahead rule.</div>
+    <div class="note">Pour the plain base <b>before</b> any protein powder or peanut butter goes in — the younger ones get it unfortified.</div>
+  </section>
+
+  <section id="wB-snack">
+    <h2 class="sec">Snack boxes</h2>
+    <p class="lede">Packed the night before · main · side · fruit</p>
+    <table>
+      <tr><th>Day</th><th>Main · Side · Fruit</th></tr>
+      <tr><td>Mon</td><td>Ham &amp; cheese pinwheel · cucumber sticks · grapes</td></tr>
+      <tr><td>Tue</td><td>Mini muffin · pretzels · blueberries</td></tr>
+      <tr><td>Wed</td><td>Crackers + cheddar · popcorn · strawberries</td></tr>
+      <tr><td>Thu</td><td>Ham pinwheel · Japanese rice crackers · grapes</td></tr>
+      <tr><td>Fri</td><td>Mini muffin · pretzels · orange segments</td></tr>
+    </table>
+    <div class="note">🚫 <b>No eggs in the box</b> — they don't come home eaten. <b>Cheese on one day only.</b> Note any reaction as usual.</div>
+    <div class="note">Breakfast carb avoids that day's box carb — that's why the muffins and the pancakes don't land together.</div>
+  </section>
+
+  <section id="wB-shop">
+    <h2 class="sec">Shopping · Saturday 15th</h2>
+    <p class="lede">Do it properly — the Saturday after is fully booked. Ticks save on this device.</p>
+    <div class="count"><span id="done">0</span> of <span id="total">0</span></div>
+    <div class="bar"><i id="fill"></i></div>
+
+    <div class="grp"><h3>🔁 Every week</h3>
+      <label class="item"><input type="checkbox"><span><b>Milk</b></span></label>
+      <label class="item"><input type="checkbox"><span><b>Yogurt</b> <em>Greek or lactose-free · also the quickest protein top-up on a thin day</em></span></label>
+      <label class="item"><input type="checkbox"><span><b>Eggs ×1 tray</b></span></label>
+      <label class="item"><input type="checkbox"><span><b>Bread</b></span></label>
+      <label class="item"><input type="checkbox"><span><b>Fruit</b> <em>bananas (firm, not spotty) + berries · grapes · oranges</em></span></label>
+      <label class="item"><input type="checkbox"><span><b>Cheddar</b></span></label>
+      <label class="item"><input type="checkbox"><span><b>Butter</b></span></label>
+      <label class="item"><input type="checkbox"><span><b>Rolled oats</b></span></label>
+    </div>
+
+    <div class="grp"><h3>Proteins</h3>
+      <label class="item"><input type="checkbox"><span><b>Chicken legs — already in the freezer</b> <em>nothing to buy · move to the fridge Wednesday to thaw · cook extra for Saturday</em></span></label>
+      <label class="item"><input type="checkbox"><span>🔺 <b>Sliced beef — buy about 1.5× the usual</b> <em>one braise feeds Tuesday and Thursday · check the freezer first</em></span></label>
+      <label class="item"><input type="checkbox"><span>Salmon ×5 fillets <em>Friday · check the freezer first</em></span></label>
+    </div>
+
+    <div class="grp"><h3>Vegetables</h3>
+      <label class="item"><input type="checkbox"><span>⭐ <b>Red capsicum ×4–5</b> <em>roasted Tuesday, raw in Thursday's wraps</em></span></label>
+      <label class="item"><input type="checkbox"><span>🥬 <b>Cos or butterhead lettuce ×2</b> <em>Thursday salad + wrap leaves</em></span></label>
+      <label class="item"><input type="checkbox"><span><b>Broccoli ×2 heads</b> <em>Friday</em></span></label>
+      <label class="item"><input type="checkbox"><span>Baby spinach ×1 bag <em>Friday</em></span></label>
+      <label class="item"><input type="checkbox"><span>Bok choy ×1 bunch <em>Tuesday, boiled with salt</em></span></label>
+      <label class="item"><input type="checkbox"><span>🍠 <b>Sweet potatoes ×3–4</b> <em>Friday fries</em></span></label>
+      <label class="item"><input type="checkbox"><span>Cherry tomatoes ×1 punnet · cucumber ×2</span></label>
+      <label class="item"><input type="checkbox"><span>Spring onions ×1 bunch</span></label>
+    </div>
+
+    <div class="grp"><h3>Carbs</h3>
+      <label class="item"><input type="checkbox"><span>🌽 <b>Corn tortillas ×2 packs</b> <em>corn, not flour — this is the whole carb for Thursday</em></span></label>
+      <label class="item"><input type="checkbox"><span>Rice <em>Tuesday only · check first</em></span></label>
+      <label class="item"><input type="checkbox"><span>Cornflour <em>for the fries · check first</em></span></label>
+    </div>
+
+    <div class="grp"><h3>Pantry — buy only if low</h3>
+      <label class="item"><input type="checkbox"><span>⚠️ <b>Infused oil</b> <em>check the bottle isn't running out</em></span></label>
+      <label class="item"><input type="checkbox"><span>Dashi or kombu · soy · mirin · maple syrup · sesame oil</span></label>
+      <label class="item"><input type="checkbox"><span>Miso <em>Friday glaze</em> · lemons ×2 · olive oil</span></label>
+      <label class="item"><input type="checkbox"><span>Protein powder <em>check stock — two days lean on it</em></span></label>
+    </div>
+
+    <div class="grp"><h3>Snack box</h3>
+      <label class="item"><input type="checkbox"><span>Chicken ham ×1 pack</span></label>
+      <label class="item"><input type="checkbox"><span>Crackers · rice crackers · popcorn · pretzels · mini muffins</span></label>
+    </div>
+
+    <button class="reset" id="reset">Clear all ticks</button>
+
+    <div class="note">🔁 <b>The top block repeats every week from now on.</b> Milk, yogurt, eggs, bread, fruit, cheddar, butter and oats will be printed on every list without being asked for. If something's already stocked, just tick it. <b>Anything else that should live there — say it once and it's permanent.</b></div>
+    <div class="note"><b>Dropped from the usual list:</b> rice vermicelli, minced beef, baby potatoes, zucchini and kai lan. Thursday's lunch came off the plan and the wraps replaced the potatoes, so none of it is needed.</div>
+    <div class="note">⚠️ <b>This is the shop that counts.</b> The following Saturday runs straight from sport into being out — there's no window to top up. Anything forgotten has to wait for a Friday-evening run.</div>
+  </section>
+
+</main>
+</div>
+
+<footer>Two weeks, one page.</footer>
+
+<script>
+const KEY = 'weekly-w13-shop-v2';
+
+document.querySelectorAll('nav.weeks button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const w = btn.dataset.week;
+    document.querySelectorAll('nav.weeks button').forEach(b => b.classList.toggle('active', b === btn));
+    document.querySelectorAll('.week').forEach(el => el.classList.toggle('active', el.id === w));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+document.querySelectorAll('nav.tabs').forEach(nav => {
+  const scope = nav.closest('.week');
+  nav.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      nav.querySelectorAll('button').forEach(b => b.classList.toggle('active', b === btn));
+      scope.querySelectorAll('section').forEach(s => s.classList.toggle('active', s.id === btn.dataset.tab));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+});
+
+const boxes = [...document.querySelectorAll('#wB-shop input[type=checkbox]')];
+const fill = document.getElementById('fill'), doneEl = document.getElementById('done');
+document.getElementById('total').textContent = boxes.length;
+const save = () => localStorage.setItem(KEY, JSON.stringify(boxes.map(b => b.checked)));
+const paint = () => {
+  const n = boxes.filter(b => b.checked).length;
+  doneEl.textContent = n;
+  fill.style.width = boxes.length ? (n / boxes.length * 100) + '%' : '0';
+};
+try { (JSON.parse(localStorage.getItem(KEY) || '[]')).forEach((v, i) => { if (boxes[i]) boxes[i].checked = v; }); }
+catch (e) { /* first run */ }
+paint();
+boxes.forEach(b => b.addEventListener('change', () => { save(); paint(); }));
+document.getElementById('reset').addEventListener('click', () => { boxes.forEach(b => b.checked = false); save(); paint(); });
+</script>
+</body>
+</html>
