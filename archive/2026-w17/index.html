@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Meal Plan">
+<title>Meal Plan · This week &amp; next</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Caveat:wght@400;600&display=swap');
+
+:root{--navy:#1D2B4F;--lavender:#C5B4E3;--pink:#F19FC2;--pearl:#FAF8FF;--ink:#1A1A2E;
+  --mist:#EDE8F7;--lav-deep:#8E76BE;--rule:#DFD8EE;--mute:#6A6480}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--pearl)}
+body{font-family:'Nunito',-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;
+  color:var(--ink);font-size:15px;line-height:1.55;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) calc(env(safe-area-inset-bottom) + 1rem) env(safe-area-inset-left)}
+
+header{background:var(--navy);color:var(--pearl);padding:1.5rem 1.2rem 1.1rem;position:relative;overflow:hidden}
+header::after{content:"";position:absolute;right:-70px;top:-90px;width:230px;height:230px;border-radius:50%;
+  background:radial-gradient(circle,rgba(197,180,227,.25),transparent 68%)}
+header .brand{font-family:'Caveat',cursive;font-size:1.35rem;color:var(--lavender);line-height:1;position:relative;z-index:1}
+header h1{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.85rem;margin:.25rem 0 .1rem;
+  color:var(--pearl);position:relative;z-index:1}
+header .meta{font-size:.72rem;color:var(--lavender);text-transform:uppercase;letter-spacing:.13em;
+  font-weight:700;position:relative;z-index:1}
+
+/* week switcher */
+nav.weeks{background:var(--navy);padding:0 .8rem 1rem;display:flex;gap:.5rem;position:relative;z-index:1}
+nav.weeks button{flex:1 1 0;background:rgba(250,248,255,.09);border:1.5px solid rgba(197,180,227,.45);
+  color:var(--lavender);font-family:inherit;font-size:.8rem;font-weight:700;padding:.55rem .5rem;
+  border-radius:10px;cursor:pointer;line-height:1.25;transition:.15s}
+nav.weeks button b{display:block;font-size:.92rem;color:#fff;font-weight:800}
+nav.weeks button.active{background:var(--pearl);border-color:var(--pearl);color:var(--navy)}
+nav.weeks button.active b{color:var(--navy)}
+nav.weeks button:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
+
+nav.tabs{position:sticky;top:0;z-index:10;background:var(--pearl);display:flex;gap:.4rem;
+  padding:.7rem .6rem;border-bottom:1px solid var(--mist);overflow-x:auto;-webkit-overflow-scrolling:touch}
+nav.tabs button{flex:0 0 auto;background:transparent;border:1.5px solid var(--lavender);color:var(--navy);
+  font-family:inherit;font-size:.82rem;font-weight:700;padding:.4rem .8rem;border-radius:999px;
+  cursor:pointer;white-space:nowrap;transition:.15s}
+nav.tabs button.active{background:var(--navy);color:var(--pearl);border-color:var(--navy)}
+nav.tabs button:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
+@media(min-width:820px){nav.tabs{justify-content:center}}
+
+.week{display:none}
+.week.active{display:block}
+main{padding:1.1rem 1rem 4rem;max-width:760px;margin:0 auto}
+section{display:none;animation:fade .2s ease-out}
+section.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+h2.sec{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.55rem;color:var(--navy);margin:0 0 .2rem}
+p.lede{color:var(--mute);margin:0 0 1.2rem;font-size:.92rem}
+
+.banner{background:var(--navy);color:var(--pearl);border-radius:12px;padding:.9rem 1rem;margin:0 0 1.3rem;font-size:.9rem}
+.banner b{color:var(--pink)}
+
+.day{border-top:1px solid var(--rule);padding:1rem 0}
+.day:first-of-type{border-top:0;padding-top:.2rem}
+.day .d{font-size:.68rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--lav-deep)}
+.day h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.35rem;color:var(--navy);
+  margin:.2rem 0 .3rem;line-height:1.15}
+.day p{margin:0 0 .35rem;color:#4A4A63;font-size:.92rem}
+.pills{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.45rem}
+.pill{font-size:.66rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  padding:.2rem .5rem;border-radius:999px;background:var(--mist);color:var(--lav-deep)}
+.pill.fry{background:var(--navy);color:var(--pearl)}
+.pill.iron{background:var(--pink);color:var(--navy)}
+.pill.out{background:transparent;border:1.5px solid var(--rule);color:var(--mute)}
+.pill.vitc{background:#FFF0B8;color:#7A5C00}
+
+table{width:100%;border-collapse:collapse;font-size:.9rem;margin:.3rem 0 1rem}
+th{text-align:left;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--lav-deep);
+  padding:.4rem .5rem .4rem 0;border-bottom:1px solid var(--rule)}
+td{padding:.5rem .5rem .5rem 0;border-bottom:1px dotted var(--rule);vertical-align:top}
+td:first-child{font-weight:800;color:var(--navy);white-space:nowrap;width:4.6rem}
+
+.grp{margin-bottom:1.4rem}
+.grp h3{font-size:.7rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--lav-deep);
+  margin:0 0 .45rem;padding-bottom:.28rem;border-bottom:1px solid var(--rule)}
+label.item{display:flex;gap:.6rem;align-items:flex-start;padding:.4rem 0;cursor:pointer}
+label.item input{appearance:none;flex:0 0 auto;width:19px;height:19px;margin-top:1px;border:1.8px solid var(--lavender);
+  border-radius:5px;background:#fff;cursor:pointer;position:relative}
+label.item input:checked{background:var(--navy);border-color:var(--navy)}
+label.item input:checked::after{content:"✓";position:absolute;inset:0;color:#fff;font-size:12px;font-weight:800;
+  display:flex;align-items:center;justify-content:center}
+label.item input:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
+label.item span{font-size:.92rem}
+label.item em{color:var(--mute);font-style:normal;font-size:.82rem}
+label.item input:checked ~ span{opacity:.42;text-decoration:line-through}
+.bar{background:var(--mist);border-radius:999px;height:7px;overflow:hidden;margin:.15rem 0 1.2rem}
+.bar i{display:block;height:100%;background:var(--lav-deep);width:0;transition:width .25s}
+.count{font-size:.77rem;color:var(--mute);font-weight:700;margin-bottom:.3rem}
+.reset{background:none;border:1.5px solid var(--rule);color:var(--mute);font-family:inherit;font-size:.75rem;
+  font-weight:700;padding:.35rem .75rem;border-radius:999px;cursor:pointer;margin-top:.5rem}
+
+.note{background:var(--mist);border-left:3px solid var(--pink);border-radius:0 8px 8px 0;padding:.7rem .85rem;
+  margin:1rem 0 0;font-size:.87rem;color:#4A4A63}
+.note b{color:var(--navy)}
+footer{text-align:center;font-family:'Caveat',cursive;font-size:1.15rem;color:var(--lav-deep);padding:1.4rem 1rem 2rem}
+
+@media print{nav.weeks,nav.tabs,.reset,.bar,.count{display:none}
+  .week,section{display:block!important;page-break-after:always}
+  body{background:#fff;padding:1cm}header{background:#fff;color:var(--navy);border-bottom:2px solid var(--navy)}
+  header h1,header .brand,header .meta{color:var(--navy)}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">the kitchen</div>
+  <h1>Meal Plan</h1>
+  <div class="meta">This week &amp; next</div>
+</header>
+
+
+<nav class="weeks">
+  <button data-week="wA">This week<b>7 – 13 Sep</b></button>
+  <button data-week="wB" class="active">Next week<b>14 – 20 Sep</b></button>
+</nav>
+
+<!-- ==================== THIS WEEK ==================== -->
+<div class="week" id="wA">
+<nav class="tabs">
+  <button data-tab="wA-cook" class="active">🍽 What's left</button>
+</nav>
+<main>
+  <section id="wA-cook" class="active">
+    <h2 class="sec">This week · what's left</h2>
+    <p class="lede">This week was never planned — and the two before it weren't either. Straight to the weekend.</p>
+    <div class="banner">🛒 <b>Saturday afternoon is the shop, and it's the only window there is.</b> Sunday runs straight through, and <b>the Saturday after is the party</b> — there is no second chance this fortnight. The list is on the Next week tab.</div>
+
+    <div class="day">
+      <div class="d">Friday · Saturday</div>
+      <h3>Whatever's in the house</h3>
+      <p>Nothing planned, so nothing to rescue. <b>Sport first thing Saturday, then out, then the fridge engineer at ten</b> — the afternoon is when it all opens up.</p>
+      <div class="pills"><span class="pill out">no cook</span><span class="pill">shop ~1pm Sat</span></div>
+    </div>
+
+    <div class="day">
+      <div class="d">Saturday night</div>
+      <h3>🥚 Boil a dozen eggs</h3>
+      <p><b>Saturday night, not Sunday</b> — Sunday goes church, then sport, then family dinner, and it won't happen. Peel them while you're there. That one habit carries the protein half of every breakfast next week.</p>
+      <p>🫙 <b>And batch four oat jars</b> — six minutes, keeps four days.</p>
+      <div class="pills"><span class="pill">10 min</span><span class="pill">makes the week work</span></div>
+    </div>
+
+    <div class="day">
+      <div class="d">Sunday</div>
+      <h3>Out — family dinner</h3>
+      <p>Church, then sport in the afternoon, then out. No cook.</p>
+      <div class="pills"><span class="pill out">no cook</span></div>
+    </div>
+
+    <div class="note">⚠️ <b>Worth saying plainly:</b> three weeks with no plan is the most likely reason you've been feeling flat — that's roughly six or seven of the meals that actually matter, missed. <b>It's one shop to fix</b>, and next week is built to clear the bar rather than sit on it.</div>
+  </section>
+</main>
+</div>
+
+<!-- ==================== NEXT WEEK ==================== -->
+<div class="week active" id="wB">
+<nav class="tabs">
+  <button data-tab="wB-cook" class="active">🍽 Cooking</button>
+  <button data-tab="wB-brek">🥚 Breakfasts</button>
+  <button data-tab="wB-snack">🍎 Snacks</button>
+  <button data-tab="wB-shop">🛒 Shopping</button>
+</nav>
+<main>
+
+  <section id="wB-cook" class="active">
+    <h2 class="sec">Cooking · 14 – 20 Sep</h2>
+    <p class="lede">Three dinners. One of them cooks twice.</p>
+    <div class="banner"><b>🍝 Spaghetti bolognese is Tuesday, with the liver in it.</b> It's the best thing that's landed in that slot — a ragù <b>improves</b> sitting between the six o'clock and seven o'clock sittings, so there's nothing to time and nothing to reheat badly.<br><br><b>Cook the pot at double.</b> Thursday's lunch then costs nothing at all, on the day that's fullest — and the second helping is what makes the week's numbers work.</div>
+
+    <div class="day">
+      <div class="d">Monday</div>
+      <h3>Out — first day back</h3>
+      <p>Back to school after the break, then swimming in the afternoon. Nobody's cooking.</p>
+      <p>🥫 <b>Your lunch is the one that counts:</b> sardines on toast, lemon squeezed over, sliced tomato and capsicum alongside. <b>Two minutes, and it's the best iron tin there is</b> — better than the salmon one for that, though the salmon wins on everything else.</p>
+      <p>The children: first day back, keep it to nothing — toast, cheese, fruit.</p>
+      <p>Dinner's out, so <b>add a yogurt or a scoop</b> to land the day.</p>
+      <div class="pills"><span class="pill out">no cook</span><span class="pill iron">iron ★</span><span class="pill vitc">vit C</span></div>
+    </div>
+
+    <div class="day">
+      <div class="d">Tuesday · lunch</div>
+      <h3>Salmon rice bowls</h3>
+      <p><b>No school for the two older ones, so everybody's home all day</b> — and the ragù is already on the stove. So lunch costs nothing: <b>canned salmon, mayo, cucumber, furikake over rice</b>, with a soft-boiled egg on top. They can roll theirs into rice balls.</p>
+      <p>🦴 <b>Mash the soft bones straight in, don't pick them out.</b> That's the whole reason to buy the bone-in tin — they break up completely and you won't find them.</p>
+      <div class="pills"><span class="pill">no cook</span><span class="pill">10 min</span><span class="pill">rice</span></div>
+    </div>
+
+    <div class="day">
+      <div class="d">Tuesday · dinner</div>
+      <h3>🍝 Spaghetti bolognese, with chicken liver folded in</h3>
+      <p><b>Sport at five, so it's two sittings again — six and seven.</b> This is the easiest dish yet for that: the pot just sits there and gets better. No per-bowl work at all.</p>
+      <p><b>The liver goes in blitzed, not in pieces this time — and that's the right call here.</b> Blended into a ragù it vanishes completely; it's the classic way it's done. Seared pieces go chalky in a long simmer, blitzed liver doesn't. <b>Nobody picks anything out and nobody knows.</b></p>
+      <p><b>Doubling the pot is what pays back the dilution.</b> Spread through a big sauce your share gets smaller — but <b>you eat from it twice</b>, tonight and Thursday lunch, which puts you back where a concentrated portion would have. And it keeps you comfortably inside the safe ceiling both times, with no portioning to think about.</p>
+      <p><b>The livers first:</b> 250 g soaked in milk for 20 minutes, <b>milk poured away</b>, patted dry, pale stringy bits trimmed. <b>Blitz them raw</b> with a stick blender and a splash of the tomato until smooth.</p>
+      <p><b>Then the sauce:</b> infused oil · <b>2 grated carrots and 1 grated red capsicum</b> softened 6–8 minutes — that's the base, the vegetables and the vitamin C all at once · <b>1 kg lean mince</b> browned properly, don't rush it · <b>the liver paste in</b>, cooked out 3–4 minutes until it loses its raw colour and disappears · tomato paste fried out a minute · <b>two tins of plain chopped tomatoes</b> · bay, oregano, a sprig of rosemary · <b>simmer 45–50 minutes, lid ajar</b> · a splash of milk at the end, salt last.</p>
+      <p>⚠️ <b>Read the tomato label.</b> Bottled pasta sauces almost always hide onion and garlic — plain passata or plain chopped tomatoes only.</p>
+      <p>⚠️ <b>Lean mince, not fatty.</b> The beef stays for the iron; the cut is what changes.</p>
+      <p>🌾 <b>Brown rice spaghetti for the whole table</b> — one product, nothing separate to manage, same call as the corn tortillas. <b>Cook it per sitting, not all at once</b> — rice pasta goes gluey sitting in a colander, and two lots of eight minutes is what the split wants anyway.</p>
+      <p><b>Two veg:</b> carrot and capsicum are cooked in · 🥬 <b>a big handful of baby spinach wilted into the pot for the last two minutes</b> · cherry tomatoes raw on the table. Parmesan over.</p>
+      <div class="pills"><span class="pill iron">iron ★★★</span><span class="pill vitc">vit C</span><span class="pill">split dinner</span><span class="pill">rice pasta</span><span class="pill">2 veg</span><span class="pill">cook 2×</span></div>
+      <div class="note"><b>This is the biggest iron meal in the whole log</b> — roughly double any single dinner that's come before it, and all of it the kind that actually absorbs. If one thing survives a bad week, make it this.</div>
+      <div class="note">☕ <b>Water at the table tonight.</b> No matcha, tea or coffee within the hour afterwards — matcha goes before breakfast or mid-afternoon instead.<br><br>🍊 <b>A small glass of orange juice for the children rather than milk</b> — with a meal it roughly triples what they absorb, and mealtimes are the safest moment for juice with two of them in expanders. Milk moves to mid-morning or bedtime.</div>
+    </div>
+
+    <div class="day">
+      <div class="d">Wednesday</div>
+      <h3>Out</h3>
+      <p>Lunch is quick — <b>two eggs and cheddar on toast</b>; there's tuition at quarter to three.</p>
+      <p>🥚 Top the boiled eggs up while the kettle's on · 🫙 <b>second batch of oat jars tonight.</b></p>
+      <div class="pills"><span class="pill out">no cook</span></div>
+    </div>
+
+    <div class="day">
+      <div class="d">Thursday · lunch</div>
+      <h3>Tuesday's bolognese, over rice</h3>
+      <p>⏱ <b>Reheat and parmesan. That's it.</b> Deliberately on the fullest day of the week — shopping run, a meeting, sport at five and people arriving at eight. <b>This is what the double pot was for.</b></p>
+      <p>Over rice rather than pasta so it doesn't read as leftovers.</p>
+      <div class="pills"><span class="pill iron">iron ★★</span><span class="pill">zero cook</span><span class="pill">rice</span><span class="pill">uses Tuesday</span></div>
+    </div>
+
+    <div class="day">
+      <div class="d">Thursday · dinner</div>
+      <h3>Soy-honey chicken thigh tray + baby potatoes</h3>
+      <p>🔇 <b>People over at eight, so nothing fried and nothing splattered.</b> Air fryer or oven only — the floor is clean before anyone walks in. This is what the machine was bought for.</p>
+      <p><b>The little one's night</b> — <b>thigh, not breast</b>: it shreds soft and holds far better across two sittings.</p>
+      <p><b>Marinate in the morning:</b> infused oil, soy, honey, grated ginger, a little sesame oil. <b>Staggered baskets</b> for six and seven o'clock.</p>
+      <p>🥔 Baby potatoes and <b>red capsicum on the same tray</b> — one load, nothing on the stove.</p>
+      <p><b>Two veg:</b> 🥬 <b>bok choy steamed, not boiled</b> — two or three centimetres of water, <b>lid on</b>, two to three minutes, salt after · capsicum off the tray.</p>
+      <p><b>Cook two extra thighs.</b> Saturday has no lunch window at all.</p>
+      <div class="pills"><span class="pill fry">no wok</span><span class="pill vitc">vit C</span><span class="pill">split dinner</span><span class="pill">potato</span><span class="pill">2 veg</span></div>
+    </div>
+
+    <div class="day">
+      <div class="d">Friday · dinner</div>
+      <h3>Baked salmon + rice + broccoli</h3>
+      <p>⏰ <b>On the table at six — you're piping the cake and packing crates from half seven.</b> No sport on a Friday, so there's nothing stopping an early one. <b>Fish in at 5:40, eating at 6:00, kitchen clear by quarter to seven.</b></p>
+      <p>Olive oil, lemon, dill, twelve minutes at 200 °C. <b>Not miso this time and not rosemary either</b> — both have had their turn recently.</p>
+      <p>🍚 <b>Rice cooker on a timer</b> — the carb looks after itself.</p>
+      <p><b>Two veg:</b> broccoli steamed · 🥬 <b>baby spinach salad, raw</b>, lemon and olive oil — no pan, no timing.</p>
+      <p>🧊 <b>Clear a fridge shelf before the cake arrives.</b></p>
+      <div class="pills"><span class="pill vitc">vit C</span><span class="pill">fish night</span><span class="pill">rice</span><span class="pill">2 veg</span><span class="pill">eat at 6</span></div>
+      <div class="note">Lunch is out this day — <b>add a topper</b> to land it.</div>
+    </div>
+
+    <div class="day">
+      <div class="d">Saturday</div>
+      <h3>🐷 The party — no cook</h3>
+      <p>The pancake stations feed everyone, so dinner is handled.</p>
+      <p>⚠️ <b>The gap is your lunch, not theirs.</b> Sport at eight, out at ten, and <b>you're cooking pancakes from one o'clock</b> — you'll cook straight through it and eat nothing. <b>Eat while you're out, and leave boiled eggs and fruit on the counter to grab at quarter to one.</b></p>
+      <p>🥓 At the party, <b>the savoury pancake station has ham and cheese on it</b> — that's your protein, use it rather than the sweet side.</p>
+      <div class="pills"><span class="pill out">no cook</span><span class="pill">⚠️ eat at 12:45</span></div>
+    </div>
+
+    <div class="day">
+      <div class="d">Sunday</div>
+      <h3>Out — family dinner</h3>
+      <p>⚠️ Church, then sport from half twelve, then the other one's match across town, then out at five. <b>Lunch has to be eaten by about twelve or it doesn't happen.</b></p>
+      <p>🎒 <b>Pack a sideline box:</b> boiled eggs, nuts, mandarins, a milk box. It's a long afternoon on a hard bench.</p>
+      <div class="pills"><span class="pill out">no cook</span><span class="pill">early lunch</span></div>
+    </div>
+
+    <div class="note">🍋 <b>Every protein dinner carries a vitamin-C vegetable and something leafy.</b> Capsicum twice, broccoli and lemon once, spinach on two nights, bok choy on one. <b>The vitamin C is what makes the iron in the meal actually count</b> — it's part of the dish, not a side you can skip.</div>
+    <div class="note">🎯 <b>What this week is built to cover.</b> Protein at every meal · <b>iron four times</b> against a floor of two — Monday's tin, Tuesday's bolognese and Thursday's second helping of it, each with vitamin C alongside · leafy greens daily, <b>spinach twice</b> · <b>oily fish three times</b>, one cooked and two out of a tin · oats on three breakfasts · the bones in both tins plus parmesan and yogurt doing the calcium.<br><br><b>Three soft spots, flagged rather than hidden:</b><br>① <b>Wednesday lands short</b> — dinner's out. One yogurt fixes it; not worth re-planning.<br>② <b>Saturday is the thin day.</b> Party, no lunch window, pancakes for dinner. The fix is the eggs on the counter and the savoury station, not a different plan.<br>③ <b>☀️ The sunshine one loses three days</b> — Tuesday has no school run, and both weekend days are indoors. So Monday, Wednesday, Thursday and Friday have to carry it: <b>get out ten or fifteen minutes early at pickup and wait outside, arms uncovered, sunscreen still on your face.</b> From inside the car it counts for nothing — the glass blocks the wavelength that makes it and lets the ageing one through.</div>
+  </section>
+
+  <section id="wB-brek">
+    <h2 class="sec">Breakfasts</h2>
+    <p class="lede">One filling thing + one protein — the same for both of them.</p>
+    <div class="banner"><b>Nothing has changed here, and nothing needs to.</b> Keep the shelf stocked and any morning sorts itself out with the microwave and the toaster. <b>The carb is negotiable. The protein isn't.</b></div>
+    <table>
+      <tr><th>Something filling — pick 1</th><th>How</th><th>Verdict</th></tr>
+      <tr><td>🥣 <b>Cereal or oats</b> + milk</td><td>pour · 60 sec</td><td>🟢 best default</td></tr>
+      <tr><td>🫙 <b>Overnight oats</b></td><td>straight from the fridge</td><td>🟢 <b>batch four jars, twice a week</b></td></tr>
+      <tr><td>🧇 <b>Frozen waffle</b></td><td>toaster · 2 min</td><td>🟢 partner matters</td></tr>
+      <tr><td>🍞 <b>Toast</b></td><td>toaster</td><td>🟢</td></tr>
+      <tr><td>🥞 <b>Batch pancakes</b></td><td>from frozen</td><td>🟢 when they exist</td></tr>
+      <tr><td>🥟 <b>Red bean pau</b></td><td>microwave · 90 sec</td><td>🟡 a sweet bun — capped, with a protein</td></tr>
+      <tr><td>🥐 <b>Croissant</b></td><td><b>baked the night before</b></td><td>🟡 butter and white flour — capped</td></tr>
+      <tr><td>🍫 <b>Chocolate croissant</b></td><td>baked the night before</td><td>🟡 a dessert — capped, not banned</td></tr>
+    </table>
+    <table>
+      <tr><th>Always add one of these</th></tr>
+      <tr><td>🥇 <b>Hard-boiled egg</b> <em>batched at the weekend, peeled and waiting</em> · 🥛 <b>milk or a milk box</b> · 🧀 <b>cheese slice</b> · 🥄 <b>yogurt pouch</b> · 🥜 <b>peanut butter</b> <em>not for everyone</em></td></tr>
+    </table>
+    <div class="note"><b>Two rules, and they replace everything else.</b><br><br>① 🥚 <b>The filling half is negotiable. The protein half is not.</b> One from the second table, every morning.<br><br>② 🍬 <b>Sweet fillings — two mornings a week between them.</b> Everything else is free choice, <b>including the same thing twice.</b></div>
+    <div class="note">🫙 <b>Oat jars — batch four, Sunday and Wednesday.</b> Six minutes, keeps three or four days, and then it's a grab item like everything else.<br><br><b>Per jar:</b> ½ cup rolled oats · ½ cup milk · 2 tbsp yogurt · pinch of salt <em>(a teaspoon of chia thickens it)</em>.<br><br>🥇 <b>Yours takes a scoop of powder — that's about 30 g of protein before eight in the morning</b>, and breakfast is the meal where your day usually leaks. <b>It's the single highest-value thing on this page.</b><br><br>🍓 Toppings in the morning, never into the jar.</div>
+    <div class="note">🥚 <b>Twelve eggs, Saturday night, peeled.</b> Not Sunday — Sunday goes church, sport, out. Top up Wednesday morning.</div>
+    <div class="note">⛔ <b>Nothing here needs a pan at 6:45am.</b> Scrambled eggs, fresh pancakes and prata go to the weekend. Night-before oven work is a different thing, and welcome.</div>
+  </section>
+
+  <section id="wB-snack">
+    <h2 class="sec">Snack boxes</h2>
+    <p class="lede">Three tubs, one from each. They pack it, not you.</p>
+    <div class="banner">🖨 <b>The printed chooser is on the freezer.</b> Tick what's in stock; they pick one from each colour. Packed <b>by them, any time before bedtime</b> — never in the morning.</div>
+    <table>
+      <tr><th>Tub</th><th>What lives in it</th></tr>
+      <tr><td>🍪 <b>Carb</b><br><em>all room-temp</em></td><td>cream crackers · rice crackers · pretzels · popcorn · Marie or digestive biscuits · breadsticks · mini wholemeal buns · bought muffins</td></tr>
+      <tr><td>🧀 <b>Protein</b><br><em>the tub that decides</em></td><td><b>Needs cold ❄️:</b> cheddar cubes · cheese slice · <b>Babybel</b> · chicken ham · yogurt pouch <em>— the wax stops it drying out, it doesn't make it shelf-stable</em><br><br><b>Truly room-temp:</b> 🥇 <b>UHT milk or soy box</b> · <b>self-roasted nuts</b> <em>if school allows</em> · roasted chickpeas or broad beans<br><br>❌ <b>Not proteins:</b> seaweed · guacamole — lovely extras, but they can't fill this slot</td></tr>
+      <tr><td>🍎 <b>Fruit</b></td><td><b>Room-temp:</b> banana · mandarin · whole apple · whole pear · <b>freeze-dried fruit</b><br><br><b>Better cold ❄️:</b> grapes · berries · cut melon</td></tr>
+    </table>
+    <div class="note">❄️ <b>Frozen cool bag by default, every day</b> — mornings here run past 30 °C and a school bag gets hotter than the room. <b>Any cheese, ham, yogurt or cut fruit → frozen bag.</b> No cheese is shelf-stable in this climate.<br><br>⚪ <b>An all-dry box needs no cold at all</b> — crackers, a milk box and a whole banana. That's the answer on a night the bag didn't get refrozen, not a reason to skip the box.<br><br>🔁 <b>The bag goes into the freezer the moment it comes home</b>, not into the sink. That's the step that quietly fails.</div>
+    <div class="note">🔁 <b>The same snack twice in a week is completely fine</b> — the only cap is <b>TREAT, two a week</b>. Cheese two or three days is fine; just don't stack dairy across one day.</div>
+    <div class="note">🚫 <b>No eggs in the box</b> — they still come home uneaten.</div>
+  </section>
+
+  <section id="wB-shop">
+    <h2 class="sec">Shopping · Saturday the 12th, from ~1pm</h2>
+    <p class="lede">The morning is sport, out, and the fridge engineer. The afternoon is the only window — and next Saturday is the party. Ticks save on this device.</p>
+    <div class="count"><span id="done">0</span> of <span id="total">0</span></div>
+    <div class="bar"><i id="fill"></i></div>
+
+    <div class="grp"><h3>🔁 Every week</h3>
+      <label class="item"><input type="checkbox"><span><b>Milk</b> <em>the liver soak takes a splash too</em></span></label>
+      <label class="item"><input type="checkbox"><span><b>Yogurt</b> <em>Greek or lactose-free · three days lean on it</em></span></label>
+      <label class="item"><input type="checkbox"><span><b>Eggs — a tray and a half</b> <em>twelve to boil Saturday night, plus the bowls and breakfasts</em></span></label>
+      <label class="item"><input type="checkbox"><span><b>Bread ×2 loaves</b> <em>Monday's tin and Wednesday's eggs are both on toast</em></span></label>
+      <label class="item"><input type="checkbox"><span><b>Fruit</b> <em>bananas · berries · grapes · mandarins</em></span></label>
+      <label class="item"><input type="checkbox"><span><b>Cheddar</b></span></label>
+      <label class="item"><input type="checkbox"><span><b>Butter</b></span></label>
+      <label class="item"><input type="checkbox"><span><b>Rolled oats</b></span></label>
+    </div>
+
+    <div class="grp"><h3>Proteins</h3>
+      <label class="item"><input type="checkbox"><span>🔺 <b>Lean beef mince 1 kg</b> <em>Tuesday at double · ⚠️ lean, not fatty · <b>freeze it, down to the fridge Sunday night</b> — mince is a two-day item</em></span></label>
+      <label class="item"><input type="checkbox"><span>🫀 <b>Chicken livers 250 g</b> <em>Tuesday · frozen is fine</em></span></label>
+      <label class="item"><input type="checkbox"><span>⭐ <b>Sardines in olive oil ×2 tins</b> <em>Monday · ⚠️ not tuna — tuna doesn't do this job</em></span></label>
+      <label class="item"><input type="checkbox"><span>⭐ <b>Canned salmon with bones ×2 tins</b> <em>Tuesday lunch · the bones are the point</em></span></label>
+      <label class="item"><input type="checkbox"><span><b>Chicken thighs ~1.2 kg</b> <em>Thursday, bone-in if you can · <b>two extra for Saturday</b> · freeze, down Wednesday</em></span></label>
+      <label class="item"><input type="checkbox"><span><b>Salmon ×5 fillets</b> <em>Friday · <b>freeze it</b>, down Wednesday night — six days in the fridge is too long</em></span></label>
+    </div>
+
+    <div class="grp"><h3>Vegetables</h3>
+      <label class="item"><input type="checkbox"><span>⭐ <b>Red capsicum ×5</b> <em>three grated into the sauce, two on Thursday's tray</em></span></label>
+      <label class="item"><input type="checkbox"><span><b>Carrots ×6</b> <em>four grated into the sauce</em></span></label>
+      <label class="item"><input type="checkbox"><span>🥬 <b>Baby spinach ×2 bags</b> <em>Tuesday into the pot, Friday as salad</em></span></label>
+      <label class="item"><input type="checkbox"><span><b>Bok choy ×2 bunches</b> <em>Thursday · steamed, not boiled</em></span></label>
+      <label class="item"><input type="checkbox"><span><b>Broccoli ×2 heads</b> <em>Friday</em></span></label>
+      <label class="item"><input type="checkbox"><span><b>Baby potatoes ~1 kg</b> <em>Thursday tray</em></span></label>
+      <label class="item"><input type="checkbox"><span>Cherry tomatoes ×1 punnet · cucumber ×3</span></label>
+      <label class="item"><input type="checkbox"><span>Spring onions ×1 bunch · <b>ginger, a big knob</b></span></label>
+      <label class="item"><input type="checkbox"><span>Lemons ×3 · <b>fresh dill</b> <em>Friday's fish</em></span></label>
+    </div>
+
+    <div class="grp"><h3>Carbs &amp; tins</h3>
+      <label class="item"><input type="checkbox"><span>🆕 🌾 <b>Brown rice spaghetti ×2 packs</b> <em>⚠️ rice, not wheat · one product for the whole table</em></span></label>
+      <label class="item"><input type="checkbox"><span>🆕 🥫 <b>Plain chopped tomatoes or passata ×4</b> <em>⚠️ <b>read the label</b> — jarred pasta sauce almost always hides onion and garlic</em></span></label>
+      <label class="item"><input type="checkbox"><span>🆕 <b>Tomato paste ×1 tube</b></span></label>
+      <label class="item"><input type="checkbox"><span>Rice <em>Tuesday lunch, Thursday lunch, Friday · check first</em></span></label>
+    </div>
+
+    <div class="grp"><h3>Pantry — buy only if low</h3>
+      <label class="item"><input type="checkbox"><span>⚠️ <b>Infused oil</b> <em>the sauce leans on it hard — check the bottle</em></span></label>
+      <label class="item"><input type="checkbox"><span><b>Parmesan</b> <em>Tuesday and Thursday both</em></span></label>
+      <label class="item"><input type="checkbox"><span>Olive oil · soy · mirin · honey · sesame oil</span></label>
+      <label class="item"><input type="checkbox"><span>Bay leaves · dried oregano · rosemary</span></label>
+      <label class="item"><input type="checkbox"><span>Protein powder <em>check stock — the oat jars want it</em></span></label>
+    </div>
+
+    <div class="grp"><h3>Breakfast shelf</h3>
+      <label class="item"><input type="checkbox"><span>🥣 <b>Low-sugar cereal ×1</b></span></label>
+      <label class="item"><input type="checkbox"><span>🧇 <b>Frozen waffles ×1 box</b></span></label>
+      <label class="item"><input type="checkbox"><span>🥟 <b>Red bean pau ×1 bag</b> <em>the savoury ones don't get eaten</em></span></label>
+      <label class="item"><input type="checkbox"><span>🥐 <b>Croissants</b> <em>baked the night before</em></span></label>
+      <label class="item"><input type="checkbox"><span>🥜 <b>Peanut butter</b> · <b>cheese slices ×1 pack</b></span></label>
+      <label class="item"><input type="checkbox"><span>🥤 <b>UHT milk boxes ×1 sleeve</b></span></label>
+      <label class="item"><input type="checkbox"><span>🫙 <b>4–6 small jars with lids</b> <em>only if you don't have them</em></span></label>
+    </div>
+
+    <div class="grp"><h3>Snack-box bin</h3>
+      <label class="item"><input type="checkbox"><span>🥇 <b>Babybel ×1 net</b> <em>still needs the cold bag</em></span></label>
+      <label class="item"><input type="checkbox"><span>Chicken ham ×1 pack · yogurt pouches ×1 pack</span></label>
+      <label class="item"><input type="checkbox"><span>🌰 <b>Raw nuts to roast yourself</b> · 🍓 <b>freeze-dried fruit</b></span></label>
+      <label class="item"><input type="checkbox"><span>Crackers · rice crackers · popcorn · pretzels · plain biscuits</span></label>
+      <label class="item"><input type="checkbox"><span>Box fruit <em>mandarins · apples · bananas · grapes</em></span></label>
+    </div>
+
+    <button class="reset" id="reset">Clear all ticks</button>
+    <div class="note">🔁 <b>The top block repeats every week</b> without being asked for. If something's already stocked, just tick it. <b>Anything else that should live there — say it once and it's permanent.</b></div>
+    <div class="note">❄️ <b>Three things go straight into the freezer and come down later:</b> the <b>mince</b> Sunday night, the <b>chicken</b> and the <b>salmon</b> Wednesday night. A shop this far ahead of a Friday fish night doesn't work any other way.</div>
+    <div class="note">🎂 <b>Separate trip, already on your list:</b> Thursday the 17th — supermarket and the baking shop for the party. Don't try to fold it into this one.</div>
+    <div class="note"><b>Dropped from last time:</b> udon, bee hoon, minced pork, sweet potatoes, dashi, sesame paste — none of it is needed this week.</div>
+  </section>
+
+</main>
+</div>
+
+<footer>Two weeks, one page.</footer>
+
+<script>
+const KEY = 'weekly-w17-shop-v1';
+
+document.querySelectorAll('nav.weeks button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const w = btn.dataset.week;
+    document.querySelectorAll('nav.weeks button').forEach(b => b.classList.toggle('active', b === btn));
+    document.querySelectorAll('.week').forEach(el => el.classList.toggle('active', el.id === w));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+document.querySelectorAll('nav.tabs').forEach(nav => {
+  const scope = nav.closest('.week');
+  nav.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      nav.querySelectorAll('button').forEach(b => b.classList.toggle('active', b === btn));
+      scope.querySelectorAll('section').forEach(s => s.classList.toggle('active', s.id === btn.dataset.tab));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+});
+
+const boxes = [...document.querySelectorAll('#wB-shop input[type=checkbox]')];
+const fill = document.getElementById('fill'), doneEl = document.getElementById('done');
+document.getElementById('total').textContent = boxes.length;
+const save = () => localStorage.setItem(KEY, JSON.stringify(boxes.map(b => b.checked)));
+const paint = () => {
+  const n = boxes.filter(b => b.checked).length;
+  doneEl.textContent = n;
+  fill.style.width = boxes.length ? (n / boxes.length * 100) + '%' : '0';
+};
+try { (JSON.parse(localStorage.getItem(KEY) || '[]')).forEach((v, i) => { if (boxes[i]) boxes[i].checked = v; }); }
+catch (e) { /* first run */ }
+paint();
+boxes.forEach(b => b.addEventListener('change', () => { save(); paint(); }));
+document.getElementById('reset').addEventListener('click', () => { boxes.forEach(b => b.checked = false); save(); paint(); });
+</script>
+</body>
+</html>
